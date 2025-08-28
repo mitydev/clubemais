@@ -1,0 +1,74 @@
+@tailwind utilities;
+body{
+    font-family: "Alexandria", sans-serif;
+}
+
+.menu-content a{
+    font-weight: bold;
+    color: #A5A5A5;
+    transition: .3s ease;
+    padding: 10px;
+}
+.menu-content a:hover{
+    background-color: rgba(244,110,0,.36);
+    color: #F46E00;
+}
+
+/* Chrome, Safari, Edge */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+/* Firefox (não mostra o ícone por padrão) */
+
+/* Edge antigo / IE */
+input[type="date"]::-ms-clear,
+input[type="date"]::-ms-expand {
+    display: none;
+}
+
+@layer utilities {
+    h1,h2,h3 {
+        line-height: 55px;
+    }
+
+    header {
+        height: 103px;
+    }
+
+    .destination-content{
+        margin-top: 30px;
+    }
+    .destination-content .destination-block.active {
+        width: 500px;
+    }
+    .destination-content .destination-block {
+        width: 240px;
+        position: relative;
+        height: 500px;
+        color: #fff;
+        border-radius: 20px;
+    }
+
+    .destination-content .destination-description h3{
+        font-size: 24px;
+        font-weight: 400;
+        letter-spacing: -2px;
+    }
+    .destination-content .destination-text-description {
+        font-size: 16px;
+        font-weight: 200;
+        font-family: Poppins, sans-serif;
+    }
+    .destination-content .destination-description {
+        position: absolute;
+        padding: 30px;
+        bottom: 0;
+    }
+    @media (min-width: 1400px) {
+        .container {
+            max-width: 1440px !important;
+        }
+    }
+}
