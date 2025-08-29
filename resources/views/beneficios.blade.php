@@ -55,104 +55,125 @@
       .pq-copy{ max-width:640px; }
     }
 
-    /* ===== COMO FUNCIONA — Opção B (Grid 5 colunas, textos nos vãos) ===== */
-    .how-title{ font-weight:800; color:#F46E00; letter-spacing:-0.02em; }
+   /* ===== COMO FUNCIONA — Grid 5 colunas (centros fixos), textos nos vãos ===== */
+.how-title{ font-weight:800; color:#F46E00; letter-spacing:-0.02em; }
 
-    .timeline5{ list-style:none; margin:0; padding:0; position:relative; }
+.timeline5{ list-style:none; margin:0; padding:0; position:relative; }
 
-    .timeline5{
-      /* dimensões */
-      --dot: 22px; --ring: 4px; --line: 4px;
-      --hex: 108px; --gap-up: 18px; --gap-down: 22px;
-      --text-gap: 18px;           /* distância texto ↔ linha */
-      --slotpad: 12px;            /* respiro lateral dentro do vão */
-      --vpad: 160px;              /* altura das áreas superior/inferior */
+.timeline5{
+  /* dimensões */
+  --dot: 22px; --ring: 4px; --line: 4px;
+  --hex: 108px; --gap-up: 18px; --gap-down: 22px;
+  --text-gap: 18px;        /* dist. texto ↔ linha */
+  --slotpad: 14px;         /* respiro perto do ponto (ajuste fino) */
+  --vpad: 165px;           /* altura das áreas sup/inf (ajuste fino) */
 
-      display:grid;
-      grid-template-columns: repeat(5, 1fr);         /* centros em 10/30/50/70/90 */
-      grid-template-rows: var(--vpad) auto var(--vpad);
-      gap: 0;
-    }
+  display:grid;
+  grid-template-columns: repeat(5, 1fr);     /* centros em 10/30/50/70/90 */
+  grid-template-rows: var(--vpad) auto var(--vpad);
+  gap: 0;
+}
 
-    /* linha central com borda nas extremidades do container (10%) */
-    .timeline5::before{
-      content:""; position:absolute; top:50%; left:10%; right:10%;
-      height: var(--line); transform: translateY(-50%);
-      background:#FF8F2C; border-radius:999px;
-    }
+/* linha central */
+.timeline5::before{
+  content:""; position:absolute; top:50%; left:10%; right:10%;
+  height: var(--line); transform: translateY(-50%);
+  background:#FF8F2C; border-radius:999px;
+}
 
-    /* cada item usa o grid do pai (centro na linha do meio) */
-    .tl-item{ display: contents; }
+/* cada item usa o grid do pai */
+.tl-item{ display: contents; }
 
-    /* centros (row 2, col 1..5) */
-    .tl-item:nth-child(1) .tl-center{ grid-column:1; grid-row:2; }
-    .tl-item:nth-child(2) .tl-center{ grid-column:2; grid-row:2; }
-    .tl-item:nth-child(3) .tl-center{ grid-column:3; grid-row:2; }
-    .tl-item:nth-child(4) .tl-center{ grid-column:4; grid-row:2; }
-    .tl-item:nth-child(5) .tl-center{ grid-column:5; grid-row:2; }
+/* centros (row 2) 1..5 */
+.tl-item:nth-child(1) .tl-center{ grid-column:1; grid-row:2; }
+.tl-item:nth-child(2) .tl-center{ grid-column:2; grid-row:2; }
+.tl-item:nth-child(3) .tl-center{ grid-column:3; grid-row:2; }
+.tl-item:nth-child(4) .tl-center{ grid-column:4; grid-row:2; }
+.tl-item:nth-child(5) .tl-center{ grid-column:5; grid-row:2; }
 
-    .tl-center{ position:relative; min-height: 220px; }
+.tl-center{ position:relative; min-height: 220px; }
 
-    /* ponto */
-    .tl-dot{
-      position:absolute; top:50%; left:50%;
-      width: var(--dot); height: var(--dot);
-      transform: translate(-50%,-50%);
-      border-radius:999px; background:#fff; z-index:3;
-      box-shadow: 0 0 0 var(--ring) #FF8F2C;
-    }
-    .tl-item.blue .tl-dot{ box-shadow: 0 0 0 var(--ring) #2BB9FF; }
-    .tl-dot::after{
-      content:""; display:block; width: calc(var(--dot)/2.8); height: calc(var(--dot)/2.8);
-      margin:auto; margin-top: calc(50% - (var(--dot)/5.6));
-      border-radius:999px; background:#FF8F2C;
-    }
-    .tl-item.blue .tl-dot::after{ background:#2BB9FF; }
+/* ponto */
+.tl-dot{
+  position:absolute; top:50%; left:50%;
+  width: var(--dot); height: var(--dot);
+  transform: translate(-50%,-50%);
+  border-radius:999px; background:#fff; z-index:3;
+  box-shadow: 0 0 0 var(--ring) #FF8F2C;
+}
+.tl-item.blue .tl-dot{ box-shadow:0 0 0 var(--ring) #2BB9FF; }
+.tl-dot::after{
+  content:""; display:block; width: calc(var(--dot)/2.8); height: calc(var(--dot)/2.8);
+  margin:auto; margin-top: calc(50% - (var(--dot)/5.6));
+  border-radius:999px; background:#FF8F2C;
+}
+.tl-item.blue .tl-dot::after{ background:#2BB9FF; }
 
-    /* conector vertical */
-    .tl-connector{ position:absolute; left:50%; transform:translateX(-50%); width:2px; background:#D9D9D9; z-index:2; }
-    .tl-item.up   .tl-connector{  bottom: calc(50% + (var(--dot)/2)); height: calc(var(--gap-up)   + (var(--hex)/2)); }
-    .tl-item.down .tl-connector{     top: calc(50% + (var(--dot)/2)); height: calc(var(--gap-down) + (var(--hex)/2)); }
+/* conector vertical */
+.tl-connector{ position:absolute; left:50%; transform:translateX(-50%); width:2px; background:#D9D9D9; z-index:2; }
+.tl-item.up   .tl-connector{  bottom: calc(50% + (var(--dot)/2)); height: calc(var(--gap-up)   + (var(--hex)/2)); }
+.tl-item.down .tl-connector{     top: calc(50% + (var(--dot)/2)); height: calc(var(--gap-down) + (var(--hex)/2)); }
 
-    /* hexágono */
-    .tl-hexwrap{ position:absolute; left:50%; transform: translateX(-50%); z-index:4; }
-    .tl-item.up   .tl-hexwrap{   bottom: calc(50% + var(--gap-up)); }
-    .tl-item.down .tl-hexwrap{     top:   calc(50% + var(--gap-down)); }
-    .how-hex{ position:relative; display:grid; place-items:center; width:var(--hex); height:var(--hex); color:#F3C600; filter: drop-shadow(0 10px 18px rgba(0,0,0,.08)); }
-    .tl-item.blue .how-hex{ color:#35B6FF; }
-    .how-hex svg{ position:absolute; inset:0; width:100%; height:100%; }
-    .how-hex svg polygon{ fill:#fff; stroke: currentColor; stroke-width:3; stroke-linejoin:round; }
-    .how-hex img{ position:relative; width:46px; height:46px; object-fit:contain; }
+/* hexágono */
+.tl-hexwrap{ position:absolute; left:50%; transform: translateX(-50%); z-index:4; }
+.tl-item.up   .tl-hexwrap{   bottom: calc(50% + var(--gap-up)); }
+.tl-item.down .tl-hexwrap{     top:   calc(50% + var(--gap-down)); }
+.how-hex{ position:relative; display:grid; place-items:center; width:var(--hex); height:var(--hex); color:#F3C600; filter: drop-shadow(0 10px 18px rgba(0,0,0,.08)); }
+.tl-item.blue .how-hex{ color:#35B6FF; }
+.how-hex svg{ position:absolute; inset:0; width:100%; height:100%; }
+.how-hex svg polygon{ fill:#fff; stroke: currentColor; stroke-width:3; stroke-linejoin:round; }
+.how-hex img{ position:relative; width:46px; height:46px; object-fit:contain; }
 
-    /* ===== Textos nos vãos =====
-       Regra: o vão entre col n e n+1 tem largura = 1 coluna.
-       Então posicionamos o bloco numa área que abrange 2 colunas (n..n+2)
-       e limitamos width para "metade do span" => 1 coluna. */
-    .timeline5 .tl-text{
-      align-self:center; /* base */
-      width: calc(50% - var(--slotpad));
-      max-width: none;
-      box-sizing: border-box;
-      line-height:1.55;
-      word-break: break-word; hyphens:auto;
-      text-align:left;
-    }
-    .timeline5 .tl-text h3{ margin:0 0 6px !important; line-height:1.25; }
-    .timeline5 .tl-text p { margin:0 !important; }
+/* ===== textos nos VÃOS (span de 2 colunas com wrapper central) ===== */
+/* ===== textos nos VÃOS (centro→centro, topo e base) ===== */
+/* ===== Textos nos VÃOS — sem position absolute, 100% robusto ===== */
+.timeline5{
+  /* ajuste fino */
+  --slotpad: 14px;    /* respiro a partir do centro/dot (12–18px) */
+  --text-gap: 18px;   /* distância da linha até o bloco de texto    */
+  --vpad: 165px;      /* altura das áreas superior/inferior          */
+}
 
-    /* Top-right (itens 1,2,4) */
-    .tl-item:nth-child(1) .tl-text{ grid-column: 1 / 3; grid-row:1; justify-self:end;  align-self:end;    margin-bottom: var(--text-gap); }
-    .tl-item:nth-child(2) .tl-text{ grid-column: 2 / 4; grid-row:1; justify-self:end;  align-self:end;    margin-bottom: var(--text-gap); }
-    .tl-item:nth-child(4) .tl-text{ grid-column: 4 / 6; grid-row:1; justify-self:end;  align-self:end;    margin-bottom: var(--text-gap); }
+/* o item de texto ocupa o span de 2 colunas (definido nos :nth-child) */
+.timeline5 .tl-text{
+  align-self: center;
+  width: 100%;
+  box-sizing: border-box;
+}
 
-    /* Bottom-left (itens 3 e 5) */
-    .tl-item:nth-child(3) .tl-text{ grid-column: 2 / 4; grid-row:3; justify-self:start; align-self:start; margin-top:    var(--text-gap); }
-    .tl-item:nth-child(5) .tl-text{ grid-column: 4 / 6; grid-row:3; justify-self:start; align-self:start; margin-top:    var(--text-gap); }
+/* conteúdo real do texto */
+.timeline5 .tl-slot{
+  width: 100%;
+  max-width: 36ch;               /* opcional p/ leitura; pode remover */
+  box-sizing: border-box;
+  line-height: 1.55;
+  word-break: break-word;
+  hyphens: auto;
+  text-align: left;
+}
+.timeline5 .tl-slot h3{ margin:0 0 6px !important; line-height:1.25; }
+.timeline5 .tl-slot p { margin:0 !important; }
 
-    /* (Opcional) limitar largura visual do parágrafo, para parecer com o mock
-       Descomente se quiser deixar mais estreito (≈ 32–36 caracteres):
-    .timeline5 .tl-text{ max-width: 34ch; }
-    */
+/* ===== mapeamento dos spans (segue teu layout) ===== */
+/* TOP-RIGHT (itens 1,2,4): o span é 2 colunas; desloca conteúdo p/ a metade DIREITA */
+.tl-item:nth-child(1) .tl-text{ grid-row: 1; padding-left: calc(4% + var(--slotpad)); }
+.tl-item:nth-child(2) .tl-text{ grid-column: 2 / 4; grid-row: 1; padding-left: calc(50% + var(--slotpad)); }
+.tl-item:nth-child(4) .tl-text{ grid-column: 4 / 6; grid-row: 1; padding-left: calc(50% + var(--slotpad)); }
+
+/* BOTTOM-LEFT (itens 3,5): desloca conteúdo p/ a metade ESQUERDA */
+.tl-item:nth-child(3) .tl-text{ grid-column: 2 / 4; grid-row: 3; align-self: start; padding-right: calc(50% + var(--slotpad)); }
+.tl-item:nth-child(5) .tl-text{ grid-column: 4 / 6; grid-row: 3; align-self: start; padding-right: calc(50% + var(--slotpad)); }
+
+/* (opcional) limite visual do parágrafo para ficar mais parecido com o mock */
+@media (min-width: 960px){
+  .timeline5 .tl-slot{ max-width: 36ch; }
+}
+
+
+/* (Opcional) limitar largura visual do parágrafo, para parecer com o mock
+    Descomente se quiser deixar mais estreito (≈ 32–36 caracteres):
+.timeline5 .tl-text{ max-width: 34ch; }
+*/
   </style>
 </head>
 
@@ -216,32 +237,33 @@
     @endphp
 
     <ol class="timeline5">
-      @foreach($steps as $i => $s)
-        @php
-          $pos = in_array($i, [1,3]) ? 'up' : 'down'; // 2 e 4 em cima; 1,3,5 embaixo
-        @endphp
+    @foreach($steps as $i => $s)
+        @php $pos = in_array($i, [1,3]) ? 'up' : 'down'; @endphp
 
         <li class="tl-item {{ $pos }} {{ $pos === 'up' ? 'blue' : 'orange' }}">
-          <!-- centro (ponto/linha/hex) -->
-          <div class="tl-center">
+        <!-- centro (ponto/linha/hex) -->
+        <div class="tl-center">
             <span class="tl-dot"></span>
             <span class="tl-connector"></span>
             <div class="tl-hexwrap">
-              <div class="how-hex" aria-hidden="true">
+            <div class="how-hex" aria-hidden="true">
                 <svg viewBox="0 0 100 100"><polygon points="25,6.7 75,6.7 100,50 75,93.3 25,93.3 0,50"/></svg>
                 <img src="{{ asset('images/beneficios/'.$s['icon']) }}" alt="">
-              </div>
             </div>
-          </div>
+            </div>
+        </div>
 
-          <!-- texto no vão (posicionado via grid :nth-child) -->
-          <div class="tl-text">
+        <!-- texto no vão (span 2 colunas; o .tl-slot é a metade centralizada = 1 coluna) -->
+        <div class="tl-text">
+            <div class="tl-slot">
             <h3 class="font-semibold text-[#6C6C6C]">{{ $s['title'] }}</h3>
             <p class="text-sm text-[#6C6C6C] mt-1 leading-relaxed">{{ $s['desc'] }}</p>
-          </div>
+            </div>
+        </div>
         </li>
-      @endforeach
+    @endforeach
     </ol>
+
   </div>
 </section>
 
