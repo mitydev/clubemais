@@ -24,10 +24,12 @@
       /* alinhamento do painel com o container central */
       --panel-left-desktop: calc(50vw - (var(--band-w-cap)/2) + var(--gutter));
       --panel-bottom-offset: clamp(24px, 8vh, 77px);
+      --panel-pad: clamp(18px, 2.4vw, 36px);
+      --panel-top-pad: clamp(40px, 12vh, 160px);
     }
 
     html, body{ margin:0; padding:0; overflow-x:hidden; }
-    .section-inner{ max-width: var(--page-w); margin-inline: auto; padding-inline: var(--gutter); }
+    .section-inner{ max-width: var(--page-w); margin-inline: auto; padding-inline: var(--gutter);}
     .align-with-timeline{ margin-inline: 0 !important; max-width: var(--page-w) !important; }
 
     /* ====== HERO FULL-BLEED ROBUSTO ====== */
@@ -67,7 +69,15 @@
     }
     .hero-panel h1{ font-weight:800; font-size:clamp(28px,3.6vw,48px); margin:0 0 16px; letter-spacing:-0.02em; }
     .hero-panel p{ margin-top:14px; line-height:1.65; color:rgba(255,255,255,.95); }
-    .hero-panel__inner{ position:relative; height:100%; padding:clamp(18px,2.4vw,36px); overflow:auto; -webkit-overflow-scrolling:touch; }
+    .hero-panel__inner{
+      position: relative;
+      height: 100%;
+      padding: var(--panel-pad);
+      /* extra no topo, além do padding base */
+      padding-top: calc(var(--panel-top-pad) + var(--panel-pad));
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
 
     @media (max-width:1279.98px){
       .hero-panel{
@@ -76,6 +86,9 @@
         width: calc(100vw - (var(--gutter)*2));
         border-radius:60px !important;
         border-bottom-left-radius:60px !important;
+      }
+      .hero-panel__inner{
+        padding: var(--panel-pad);
       }
     }
 
@@ -97,7 +110,7 @@
     }
 
     /* ====== COMO FUNCIONA (timeline) ====== */
-    .how-title{ font-weight:800; color:#F46E00; letter-spacing:-0.02em; }
+    .how-title{ font-weight:800; color:#F46E00; letter-spacing:-0.02em; margin-top: 30px;}
     .timeline5{ list-style:none; margin:0; padding:0; position:relative; }
     .timeline5{
       --dot: 22px; --ring: 2px; --line: 2px;
