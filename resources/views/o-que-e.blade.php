@@ -226,7 +226,7 @@
   <!-- ===== HERO ===== -->
   <section>
     <figure class="hero-band">
-      <img class="hero-photo" src="{{ asset('images/beneficios/benefioPrograma.png') }}" alt="O programa - Clube+">
+      <img class="hero-photo" src="{{ asset('images/o-que-e/benefioPrograma.png') }}" alt="O programa - Clube+">
       <div class="hero-panel">
         <div class="hero-panel__inner">
           <h1>{{ $heroTitle ?? 'O programa' }}</h1>
@@ -250,7 +250,7 @@
           </div>
         </div>
         <figure class="pq-art">
-          <img src="{{ asset('images/beneficios/praquem.png') }}" alt="Públicos do Clube+">
+          <img src="{{ asset('images/o-que-e/praquem.png') }}" alt="Públicos do Clube+">
         </figure>
       </div>
     </div>
@@ -287,7 +287,7 @@
               <div class="tl-hexwrap">
                 <div class="how-hex" aria-hidden="true">
                   <svg viewBox="0 0 100 100"><polygon points="25,6.7 75,6.7 100,50 75,93.3 25,93.3 0,50"/></svg>
-                  <img src="{{ asset('images/beneficios/'.$s['icon']) }}" alt="">
+                  <img src="{{ asset('images/o-que-e/'.$s['icon']) }}" alt="">
                 </div>
               </div>
             </div>
@@ -315,7 +315,7 @@
           @for($i=0; $i<10; $i++)
             <article class="depo-card snap-center bg-white/98 rounded-[18px] md:rounded-[20px] shadow-[0_8px_20px_rgba(0,0,0,.12)]">
               <div class="flex items-center gap-3 mb-3">
-                <img class="w-10 h-10 rounded-full object-cover" src="{{ asset('images/beneficios/user.png') }}" alt="">
+                <img class="w-10 h-10 rounded-full object-cover" src="{{ asset('images/o-que-e/user.png') }}" alt="">
                 <div>
                   <div class="font-semibold text-[#212121]">David Rodrigo W.</div>
                   <div class="text-xs text-black/60 leading-none mt-0.5">Traveler</div>
