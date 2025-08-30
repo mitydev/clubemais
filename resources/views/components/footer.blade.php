@@ -35,7 +35,7 @@
                     <li><a class="hover:underline" href="#">Hotéis & Resorts</a></li>
                     <li><a class="hover:underline" href="#">Benefícios</a></li>
                     <li><a class="hover:underline" href="{{ route('beneficios') }}">Parceiros</a></li>
-                    <li><a class="hover:underline" href="#">FAQs</a></li>
+                    <li><a class="hover:underline" href="{{ route('beneficios') }}">FAQs</a></li>
                     <li><a class="hover:underline" href="#">Contato</a></li>
                     <li><a class="hover:underline" href="#">Login e Cadastro</a></li>
                 </ul>

@@ -10,10 +10,10 @@
             </div>
 
             <nav class="hidden md:flex space-x-8 menu-content">
-                <a href="#">O que é</a>
+                <a href="{{ route('o-que-e') }}">O que é</a>
                 <a href="#">Hotéis & Resorts</a>
                 <a href="{{ route('beneficios') }}">Benefícios</a>
-                <a href="#">Parceiros</a>
+                <a href="{{ route('parceiros') }}">Parceiros</a>
                 <a href="#">FAQ</a>
                 <a href="#">Contato</a>
             </nav>
