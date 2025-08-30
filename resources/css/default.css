@@ -43,12 +43,40 @@ input[type="date"]::-ms-expand {
     .destination-content .destination-block.active {
         width: 500px;
     }
+
+    .destination-content .destination-button button{
+        background-color: #fff;
+        width: 100%;
+        padding: 8px 15px;
+        font-size: 16px;
+        text-align: left;
+        color: #1E1E1E;
+        margin-top: 15px;
+        border-radius: 50px;
+    }
+
+    .swiper .swiper-slide {
+       padding: 20px 0;
+    }
+    .swiper {
+        width: 100%;
+    }
     .destination-content .destination-block {
         width: 240px;
         position: relative;
         height: 500px;
+        transition: ease-in .2s;
         color: #fff;
         border-radius: 20px;
+    }
+
+    .beneficios .conheca h1{
+        font-size: 50px;
+        color: #fff;
+        font-family: "Poppins", sans-serif;
+        max-width: 700px;
+        padding: 50px 0;
+        font-weight: 600;
     }
 
     .destination-content .destination-description h3{
@@ -58,12 +86,17 @@ input[type="date"]::-ms-expand {
     }
     .destination-content .destination-text-description {
         font-size: 16px;
+
         font-weight: 200;
         font-family: Poppins, sans-serif;
     }
     .destination-content .destination-description {
         position: absolute;
         padding: 30px;
+        background: linear-gradient(to top, rgba(0,0,0,0.6) 10%, rgba(0,0,0,0) 100%);
+        border-bottom-left-radius: 20px ;
+        border-bottom-right-radius: 20px ;
+        width: 100%;
         bottom: 0;
     }
     @media (min-width: 1400px) {

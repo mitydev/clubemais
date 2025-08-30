@@ -7,6 +7,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
     @vite(['resources/css/default.css','resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
@@ -182,7 +186,7 @@
                             Lorem ipsum lorem nimo ommolum qui auda sundi num quisque proresequis modic to berrovidem.
                         </p>
                         <div class="destination-button">
-
+                            <button>Veja o Hotel</button>
                         </div>
                     </div>
 
@@ -191,10 +195,11 @@
                     <div class="destination-description" >
                         <h3 class="destination-text-title">Brava Mundo</h3>
                         <p class="destination-text-description">
-                            Lorem ipsum lorem nimo ommolum qui auda sundi num quisque proresequis modic to berrovidem.
+                            Lorem Ipsum lorem ipsum
+                            lorem.
                         </p>
                         <div class="destination-button">
-
+                            <button>Veja o Hotel</button>
                         </div>
                     </div>
 
@@ -203,10 +208,11 @@
                     <div class="destination-description">
                         <h3 class="destination-text-title">Poehma</h3>
                         <p class="destination-text-description">
-                            Lorem ipsum lorem nimo ommolum qui auda sundi num quisque proresequis modic to berrovidem.
+                            Lorem Ipsum lorem ipsum
+                            lorem.
                         </p>
                         <div class="destination-button">
-
+                            <button>Veja o Hotel</button>
                         </div>
                     </div>
                 </div>
@@ -214,14 +220,70 @@
                     <div class="destination-description">
                         <h3 class="destination-text-title">Vivant Eco Beach</h3>
                         <p class="destination-text-description">
-                            Lorem ipsum lorem nimo ommolum qui auda sundi num quisque proresequis modic to berrovidem.
+                            Lorem Ipsum lorem ipsum
+                            lorem.
                         </p>
                         <div class="destination-button">
-                            <button class=""></button>
+                            <button>Veja o Hotel</button>
                         </div>
                     </div>
 
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="bg-[#F46E00]">
+    <div class="w-full">
+        <div class="swiper">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper">
+                <!-- Slides -->
+                <div class="swiper-slide">
+                    <div class="w-full flex justify-center">
+                        <img src="{{asset('images/logoipsum.png')}}" class="m-auto" alt="logo">
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="w-full flex justify-center">
+                        <img src="{{asset('images/loqo.png')}}" class="m-auto" alt="logo">
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="w-full flex justify-center">
+                        <img src="{{asset('images/logoipsum.png')}}" class="m-auto" alt="logo">
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="w-full flex justify-center">
+                        <img src="{{asset('images/logoipsum.png')}}" class="m-auto" alt="logo">
+                    </div>
+
+                </div>
+                <div class="swiper-slide">
+                    <div class="w-full flex justify-center">
+                        <img src="{{asset('images/logoipsum.png')}}" class="m-auto" alt="logo">
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="w-full flex justify-center">
+                        <img src="{{asset('images/logoipsum.png')}}" class="m-auto" alt="logo">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="max-w-[1440px] m-auto beneficios">
+        <div class="w-full grid grid-cols-2">
+            <div class="conheca">
+                <h1>Conheça alguns benefícios
+                    de quem é Clube +</h1>
+            </div>
+            <div class="">
+                <p class="text-[#fff] font-[16px]">
+                    Lorem ipsum lorem nimo ommolum qui auda sundi num quisque proresequis modic to berrovidem.
+                </p>
             </div>
         </div>
     </div>
@@ -315,6 +377,30 @@
             Clube + © {{date('Y')}}. Todos os direitos reservados.
         </div>
     </div>
+
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script type="application/javascript">
+    const blocks = document.querySelectorAll('.destination-block');
+    blocks.forEach(block => {
+        block.addEventListener('mouseenter', () => {
+            blocks.forEach(b => b.classList.remove('active'));
+            block.classList.add('active');
+        });
+    });
+    const swiper = new Swiper('.swiper', {
+        // Optional parameters
+        slidesPerView: '5',
+        loop: true,
+        speed: 3000,
+        grabCursor: true,
+        spaceBetween: 16,
+        freeMode: true,
+        autoplay: {
+            delay: 0,           // muda a cada 3s
+            disableOnInteraction: false, // continua mesmo se clicar
+        },
+    });
+</script>
 </body>
 </html>
