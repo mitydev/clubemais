@@ -81,7 +81,7 @@
 
     /* ====== PARA QUEM É? ====== */
     .pq{ background:#F4F1EA; }
-    .pq-wrap{ display:grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(40px,6.5vw,110px); align-items:center; }
+    .pq-wrap{ display:grid; grid-template-columns: 0.9fr 1.1fr;align-items:center; }
     .pq h2{ font-weight:800; font-size:clamp(36px,3.6vw,52px); letter-spacing:-0.02em; margin:0 0 18px; }
     .pq-copy{ max-width:323px; }
     .pq-copy p{ margin:0 0 18px; line-height:1.72; color:rgba(0,0,0,.70); }
@@ -292,19 +292,17 @@
 
   <!-- ===== Depoimentos ===== -->
   <section class="depo bg-[#39C0F2] relative overflow-hidden">
-    <!-- banda decorativa -->
+     
     <div class="depo-band" aria-hidden="true"></div>
-
     <div class="section-inner relative z-[1]">
       <h2 class="text-white text-[34px] md:text-[42px] font-extrabold mb-8">Depoimentos</h2>
-
       <div class="depo-wrap">
         <div id="dep-list"
             class="depo-list no-scrollbar snap-x snap-mandatory overflow-x-auto flex gap-8 md:gap-10 px-[var(--gutter)] pb-6">
           @for($i=0; $i<10; $i++)
             <article class="depo-card snap-center bg-white/98 rounded-[18px] md:rounded-[20px] shadow-[0_8px_20px_rgba(0,0,0,.12)]">
               <div class="flex items-center gap-3 mb-3">
-                <img class="w-10 h-10 rounded-full object-cover" src="{{ asset('images/beneficios/avatar.jpg') }}" alt="">
+                <img class="w-10 h-10 rounded-full object-cover" src="{{ asset('images/beneficios/user.png') }}" alt="">
                 <div>
                   <div class="font-semibold text-[#212121]">David Rodrigo W.</div>
                   <div class="text-xs text-black/60 leading-none mt-0.5">Traveler</div>
@@ -332,141 +330,141 @@
   @include('components.footer')
 
 <script>
-(function(){
-  const wrap  = document.getElementById('dep-list');
-  const track = document.getElementById('depoTrack');
-  const thumb = document.getElementById('depoThumb');
-  if(!wrap || !track || !thumb) return;
+  (function(){
+    const wrap  = document.getElementById('dep-list');
+    const track = document.getElementById('depoTrack');
+    const thumb = document.getElementById('depoThumb');
+    if(!wrap || !track || !thumb) return;
 
-  /* ===== helpers ===== */
-  const gap = () => parseFloat(getComputedStyle(wrap).gap || 0) || 0;
-  const step = () => {
-    const c = wrap.querySelector('.depo-card');
-    return c ? Math.ceil(c.getBoundingClientRect().width + gap()) : wrap.clientWidth * .9;
-  };
-  const maxScroll = () => Math.max(0, wrap.scrollWidth - wrap.clientWidth);
-  const trackW = () => track.clientWidth;
+    /* ===== helpers ===== */
+    const gap = () => parseFloat(getComputedStyle(wrap).gap || 0) || 0;
+    const step = () => {
+      const c = wrap.querySelector('.depo-card');
+      return c ? Math.ceil(c.getBoundingClientRect().width + gap()) : wrap.clientWidth * .9;
+    };
+    const maxScroll = () => Math.max(0, wrap.scrollWidth - wrap.clientWidth);
+    const trackW = () => track.clientWidth;
 
-  /* ===== progresso (tamanho/posição) ===== */
-  function updateThumb(){
-    const tw = trackW();
-    const ratio = wrap.clientWidth / wrap.scrollWidth;
-    const w = Math.max(60, Math.min(tw, Math.round(tw * ratio)));     // clamp p/ não passar do trilho
-    const pos = maxScroll() ? (wrap.scrollLeft / maxScroll()) : 0;
-    const x = (tw - w) * pos;
+    /* ===== progresso (tamanho/posição) ===== */
+    function updateThumb(){
+      const tw = trackW();
+      const ratio = wrap.clientWidth / wrap.scrollWidth;
+      const w = Math.max(60, Math.min(tw, Math.round(tw * ratio)));     // clamp p/ não passar do trilho
+      const pos = maxScroll() ? (wrap.scrollLeft / maxScroll()) : 0;
+      const x = (tw - w) * pos;
 
-    thumb.style.width = w + 'px';
-    thumb.style.transform = `translateX(${x}px)`;
-  }
-
-  /* ===== wheel: 1 passo por card ===== */
-  let wheelLock = false;
-  wrap.addEventListener('wheel', (e) => {
-    if(!wrap.matches(':hover')) return;
-    const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
-    if(delta === 0) return;
-    e.preventDefault();
-
-    if (wheelLock) return;
-    wheelLock = true;
-    wrap.scrollBy({ left: (delta > 0 ? 1 : -1) * step(), behavior: 'smooth' });
-    setTimeout(() => wheelLock = false, 180);
-  }, { passive:false });
-
-  /* ===== drag no conteúdo ===== */
-  let down=false, startX=0, startScroll=0, pid=null;
-  wrap.addEventListener('pointerdown', (e)=>{
-    if(e.target.closest('#depoTrack')) return;  // se começou no slider, deixa o slider cuidar
-    down = true; pid = e.pointerId; wrap.setPointerCapture(pid);
-    startX = e.clientX; startScroll = wrap.scrollLeft;
-    wrap.style.scrollSnapType = 'none';
-  });
-  wrap.addEventListener('pointermove', (e)=>{
-    if(!down) return;
-    wrap.scrollLeft = startScroll - (e.clientX - startX);
-    updateThumb();
-  });
-  function endDrag(){
-    if(!down) return;
-    down=false; try{ wrap.releasePointerCapture(pid);}catch{}
-    wrap.style.scrollSnapType = '';
-    const i = Math.round(wrap.scrollLeft / step());
-    wrap.scrollTo({ left: i * step(), behavior: 'smooth' });
-  }
-  wrap.addEventListener('pointerup', endDrag);
-  wrap.addEventListener('pointercancel', endDrag);
-  wrap.addEventListener('pointerleave', endDrag);
-
-  /* ===== slider: clique no trilho ===== */
-  track.addEventListener('pointerdown', (e)=>{
-    if(e.target === thumb) return;                               // o thumb tem handler próprio
-    const r = track.getBoundingClientRect();
-    const x = Math.min(Math.max(0, e.clientX - r.left), r.width);
-    const ratio = x / r.width;
-    wrap.scrollTo({ left: maxScroll() * ratio, behavior: 'smooth' });
-  });
-
-  /* ===== slider: arrastar o thumb ===== */
-  let draggingThumb = false, tPid=null, startThumbX=0, startThumbLeft=0;
-  function currentThumbLeft(){
-    // converte transform em número
-    const m = getComputedStyle(thumb).transform;
-    if (m && m !== 'none') {
-      const v = new DOMMatrixReadOnly(m).m41; // translateX
-      return v || 0;
+      thumb.style.width = w + 'px';
+      thumb.style.transform = `translateX(${x}px)`;
     }
-    return 0;
-  }
 
-  thumb.addEventListener('pointerdown', (e)=>{
-    draggingThumb = true; tPid = e.pointerId; thumb.setPointerCapture(tPid);
-    startThumbX = e.clientX;
-    startThumbLeft = currentThumbLeft();
-    wrap.style.scrollSnapType = 'none';
-    e.preventDefault();
-  });
+    /* ===== wheel: 1 passo por card ===== */
+    let wheelLock = false;
+    wrap.addEventListener('wheel', (e) => {
+      if(!wrap.matches(':hover')) return;
+      const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+      if(delta === 0) return;
+      e.preventDefault();
 
-  track.addEventListener('pointermove', (e)=>{
-    if(!draggingThumb) return;
-    const tw = trackW();
-    const w  = thumb.clientWidth;
-    const dx = e.clientX - startThumbX;
-    const left = Math.min(Math.max(0, startThumbLeft + dx), tw - w);
+      if (wheelLock) return;
+      wheelLock = true;
+      wrap.scrollBy({ left: (delta > 0 ? 1 : -1) * step(), behavior: 'smooth' });
+      setTimeout(() => wheelLock = false, 180);
+    }, { passive:false });
 
-    // move o thumb
-    thumb.style.transform = `translateX(${left}px)`;
+    /* ===== drag no conteúdo ===== */
+    let down=false, startX=0, startScroll=0, pid=null;
+    wrap.addEventListener('pointerdown', (e)=>{
+      if(e.target.closest('#depoTrack')) return;  // se começou no slider, deixa o slider cuidar
+      down = true; pid = e.pointerId; wrap.setPointerCapture(pid);
+      startX = e.clientX; startScroll = wrap.scrollLeft;
+      wrap.style.scrollSnapType = 'none';
+    });
+    wrap.addEventListener('pointermove', (e)=>{
+      if(!down) return;
+      wrap.scrollLeft = startScroll - (e.clientX - startX);
+      updateThumb();
+    });
+    function endDrag(){
+      if(!down) return;
+      down=false; try{ wrap.releasePointerCapture(pid);}catch{}
+      wrap.style.scrollSnapType = '';
+      const i = Math.round(wrap.scrollLeft / step());
+      wrap.scrollTo({ left: i * step(), behavior: 'smooth' });
+    }
+    wrap.addEventListener('pointerup', endDrag);
+    wrap.addEventListener('pointercancel', endDrag);
+    wrap.addEventListener('pointerleave', endDrag);
 
-    // mapeia para o scroll (sem smooth para ficar “na mão”)
-    const ratio = (tw - w) ? (left / (tw - w)) : 0;
-    wrap.scrollLeft = maxScroll() * ratio;
-    e.preventDefault();
-  }, { passive:false });
+    /* ===== slider: clique no trilho ===== */
+    track.addEventListener('pointerdown', (e)=>{
+      if(e.target === thumb) return;                               // o thumb tem handler próprio
+      const r = track.getBoundingClientRect();
+      const x = Math.min(Math.max(0, e.clientX - r.left), r.width);
+      const ratio = x / r.width;
+      wrap.scrollTo({ left: maxScroll() * ratio, behavior: 'smooth' });
+    });
 
-  function endThumbDrag(){
-    if(!draggingThumb) return;
-    draggingThumb = false;
-    try{ thumb.releasePointerCapture(tPid);}catch{}
-    wrap.style.scrollSnapType = '';
-    // snap para o card mais próximo
-    const i = Math.round(wrap.scrollLeft / step());
-    wrap.scrollTo({ left: i * step(), behavior: 'smooth' });
-    updateThumb();
-  }
-  thumb.addEventListener('pointerup',   endThumbDrag);
-  thumb.addEventListener('pointercancel', endThumbDrag);
-  thumb.addEventListener('pointerleave',  endThumbDrag);
+    /* ===== slider: arrastar o thumb ===== */
+    let draggingThumb = false, tPid=null, startThumbX=0, startThumbLeft=0;
+    function currentThumbLeft(){
+      // converte transform em número
+      const m = getComputedStyle(thumb).transform;
+      if (m && m !== 'none') {
+        const v = new DOMMatrixReadOnly(m).m41; // translateX
+        return v || 0;
+      }
+      return 0;
+    }
 
-  /* ===== teclado ===== */
-  wrap.setAttribute('tabindex','0');
-  wrap.addEventListener('keydown', (e)=>{
-    if(e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-    wrap.scrollBy({ left: (e.key === 'ArrowRight' ? step() : -step()), behavior:'smooth' });
-  });
+    thumb.addEventListener('pointerdown', (e)=>{
+      draggingThumb = true; tPid = e.pointerId; thumb.setPointerCapture(tPid);
+      startThumbX = e.clientX;
+      startThumbLeft = currentThumbLeft();
+      wrap.style.scrollSnapType = 'none';
+      e.preventDefault();
+    });
 
-  wrap.addEventListener('scroll', updateThumb, {passive:true});
-  window.addEventListener('resize', updateThumb);
-  requestAnimationFrame(updateThumb);
-})();
+    track.addEventListener('pointermove', (e)=>{
+      if(!draggingThumb) return;
+      const tw = trackW();
+      const w  = thumb.clientWidth;
+      const dx = e.clientX - startThumbX;
+      const left = Math.min(Math.max(0, startThumbLeft + dx), tw - w);
+
+      // move o thumb
+      thumb.style.transform = `translateX(${left}px)`;
+
+      // mapeia para o scroll (sem smooth para ficar “na mão”)
+      const ratio = (tw - w) ? (left / (tw - w)) : 0;
+      wrap.scrollLeft = maxScroll() * ratio;
+      e.preventDefault();
+    }, { passive:false });
+
+    function endThumbDrag(){
+      if(!draggingThumb) return;
+      draggingThumb = false;
+      try{ thumb.releasePointerCapture(tPid);}catch{}
+      wrap.style.scrollSnapType = '';
+      // snap para o card mais próximo
+      const i = Math.round(wrap.scrollLeft / step());
+      wrap.scrollTo({ left: i * step(), behavior: 'smooth' });
+      updateThumb();
+    }
+    thumb.addEventListener('pointerup',   endThumbDrag);
+    thumb.addEventListener('pointercancel', endThumbDrag);
+    thumb.addEventListener('pointerleave',  endThumbDrag);
+
+    /* ===== teclado ===== */
+    wrap.setAttribute('tabindex','0');
+    wrap.addEventListener('keydown', (e)=>{
+      if(e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      wrap.scrollBy({ left: (e.key === 'ArrowRight' ? step() : -step()), behavior:'smooth' });
+    });
+
+    wrap.addEventListener('scroll', updateThumb, {passive:true});
+    window.addEventListener('resize', updateThumb);
+    requestAnimationFrame(updateThumb);
+  })();
 </script>
 
 
