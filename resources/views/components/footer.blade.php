@@ -31,10 +31,10 @@
             <div class="lg:col-span-3 pt-4">
                 <h4 class="text-2xl font-semibold mb-4">Links Rápidos</h4>
                 <ul class="space-y-3 text-white/90">
-                    <li><a class="hover:underline" href="#">O que é o Clube +</a></li>
+                    <li><a class="hover:underline" href="{{ route('o-que-e') }}">O que é o Clube +</a></li>
                     <li><a class="hover:underline" href="#">Hotéis & Resorts</a></li>
                     <li><a class="hover:underline" href="#">Benefícios</a></li>
-                    <li><a class="hover:underline" href="{{ route('beneficios') }}">Parceiros</a></li>
+                    <li><a class="hover:underline" href="{{ route('parceiros') }}">Parceiros</a></li>
                     <li><a class="hover:underline" href="{{ route('beneficios') }}">FAQs</a></li>
                     <li><a class="hover:underline" href="#">Contato</a></li>
                     <li><a class="hover:underline" href="#">Login e Cadastro</a></li>
