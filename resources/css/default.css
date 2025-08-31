@@ -76,6 +76,13 @@ input[type="date"]::-ms-expand {
         border-radius: 20px;
     }
 
+    .hero-banner-beneficios p{
+        letter-spacing: 0;
+        line-height: 45px;
+        max-width: 480px;
+        color: #fff;
+    }
+
     .beneficios .conheca-description p{
         margin: 20px 0;
         padding: 10px 0;

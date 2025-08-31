@@ -26,24 +26,33 @@
       --panel-top-pad: clamp(40px, 12vh, 160px);
     }
 
-    html, body{ margin:0; padding:0; overflow-x:hidden; }
-    .section-inner{ max-width: var(--page-w); margin-inline: auto; padding-inline: var(--gutter);}
-    .align-with-timeline{ margin-inline: 0 !important; max-width: var(--page-w) !important; }
-
   </style>
 </head>
 
 <body class="bg-white">
-
   @include('components.header')
+  <section class="w-full section-beneficios">
+      <div class="max-w-[1440px] m-auto bg-center bg-no-repeat h-[1277px]" style="background-image: url('{{asset('images/hero_beneficios.png')}}')">
+          <div class="grid grid-cols-2 h-full hero-banner-beneficios">
+              <div></div>
+              <div class="flex justify-center items-center flex-col">
+                  <x-highlight>
+                      <h1>+ do que hospedagem.</h1>
+                      <h3 style="line-height: 40px">Mais de 100 benefícios para você.</h3>
+                  </x-highlight>
+                  <div class="w-full mt-10">
+                      <p class="font-light text-[40px]">
+                          <strong style="font-weight: bold">Ser Clube +</strong> é ter acesso a experiências, serviços e vantagens exclusivas em diversos segmentos, em todo o Brasil.
+                      </p>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+  </section>
 
 
 
   @include('components.footer')
-
-<script>
-
-</script>
-
 </body>
 </html>
