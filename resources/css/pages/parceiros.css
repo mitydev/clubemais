@@ -633,3 +633,11 @@
   }
   .rules__cta{ width:36px; height:36px; }
 }
+
+@media (min-width: 641px) and (max-width: 780px){
+  .parc-hero {
+    --hero-shift: -32px;
+    aspect-ratio: auto;
+    min-height: 720px;
+  }
+}
