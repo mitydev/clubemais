@@ -461,6 +461,64 @@
     </div>
 
 </section>
+<div data-elementor-type="wp-page" data-elementor-id="1056" class="elementor elementor-1056" data-elementor-post-type="page">
+    <div class="elementor-element elementor-element-84543a9 e-flex e-con-boxed e-con e-parent" data-id="84543a9" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;_ha_eqh_enable&quot;:false}" data-core-v316-plus="true">
+        <div class="e-con-inner">
+            <div class="elementor-element elementor-element-6da6e43 e-flex e-con-boxed e-con e-child" data-id="6da6e43" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;_ha_eqh_enable&quot;:false}">
+                <div class="e-con-inner">
+                    <div class="elementor-element elementor-element-1e17443 elementor-widget elementor-widget-html" data-id="1e17443" data-element_type="widget" data-widget_type="html.default">
+                        <div class="elementor-widget-container">
+                            <div id="otabuilder-widget">Carregando...</div>
+                            <script>
+                                function loadJS(url, location) {
+                                    var scriptTag = document.createElement('script')
+                                    scriptTag.src = url
+                                    scriptTag.crossOrigin = 'anonymous'
+                                    scriptTag.defer = true
+                                    scriptTag.async = true
+                                    location.appendChild(scriptTag)
+                                }
+                                function initOtabuilderWidget(storefrontId, getCredentials, elementId, orientation) {
+                                    var k = '_OTABUILDER_EMBEDDED_SEARCH_INIT'
+                                    var loaded = false
+                                    var _i = function (initSearchForm) {
+                                        if (!loaded) {
+                                            loaded = true
+                                            initSearchForm(document.getElementById(elementId), {
+                                                storefrontId: storefrontId,
+                                                getCredentials: getCredentials,
+                                                orientation: orientation,
+                                            })
+                                        }
+                                    }
+                                    if (window[_k]) {
+                                        _i(window[_k])
+                                    } else {
+                                        const listener = function (e) {
+                                            _i(e.detail.initSearchForm)
+                                        }
+                                        document.addEventListener('otabuilder-search-ready', listener)
+                                    }
+                                }
+                                initOtabuilderWidget(
+                                    'xcGENFcrc44OoqI8awMuE' /** storefrontId */,
+                                    undefined /** getCredentials */,
+                                    'otabuilder-widget' /** widget container */,
+                                    'HORIZONTAL' /* orientation */
+                                )
+                                loadJS(
+                                    'https://app.otabuilder.com/static/js/widget.js' /** widget Js Url */,
+                                    document.body /** script tag parent */
+                                )
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <svg width="0" height="0">
     <defs>

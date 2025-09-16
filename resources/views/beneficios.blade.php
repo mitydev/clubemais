@@ -50,6 +50,94 @@
 
       </div>
   </section>
+  <section class="bg-[#F4F1EA] pt-4 pb-4 section-beneficios-desc">
+      <div class="max-w-[1440px] m-auto pt-[150px] section-content" >
+          <div class="w-full">
+              <div class="grid grid-cols-5">
+                  <div class="col-span-2">
+                      <div class="max-w-[360px] m-auto">
+                          <h1>Nolren Upsim Lorem</h1>
+                          <p>
+                              Optaquae perepedi dende officae cabore, niandi opti ut lam de cumque nimo ommolum qui auda sundi num quisque proresequis modic to berrovidem. Musam aliquo optae que nonecul.
+                          </p>
+                      </div>
+                  </div>
+                  <div class="col-span-3 flex justify-center">
+                      <div class="section-beneficios-content">
+                          <div class="relative">
+                              <div class="dot">
+                                  <img src="{{asset('images/arrow_outward_white.svg')}}" alt="">
+                              </div>
+                              <img class="max-w-[343px] m-auto w-full" src="{{asset('images/bg-beneficios1.png')}}" alt="">
+                          </div>
+                          <div class="px-6 pt-2">
+                              <p>Lorem ipusm Lorem ipusm
+                              lorem lorem</p>
+                          </div>
+                      </div>
+                      <div class="section-beneficios-content">
+                          <div class="relative">
+                              <div class="dot">
+                                  <img src="{{asset('images/arrow_outward_white.svg')}}" alt="">
+                              </div>
+                              <img class="max-w-[343px] m-auto w-full" src="{{asset('images/bg-beneficios1.png')}}" alt="">
+                          </div>
+                          <div class="px-6 pt-2">
+                              <p>Lorem ipusm Lorem ipusm
+                                  lorem lorem</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="number-contents">
+              <div class="box">
+                  <div class="box-icon">
+                      <img src="{{asset('images/products.svg')}}" alt="">
+                  </div>
+                  <div class="box-description">
+                      <p>
+                          <span>2000+</span> <br>
+                          Produtos
+                      </p>
+                  </div>
+              </div>
+              <div class="box">
+                  <div class="box-icon">
+                      <img src="{{asset('images/segmentos.svg')}}" alt="">
+                  </div>
+                  <div class="box-description">
+                      <p>
+                          <span>7001+</span> <br>
+                        Segmentos
+                      </p>
+                  </div>
+              </div>
+              <div class="box">
+                  <div class="box-icon">
+                      <img src="{{asset('images/products.svg')}}" alt="">
+                  </div>
+                  <div class="box-description">
+                      <p>
+                          <span>2000+</span> <br>
+                          Produtos
+                      </p>
+                  </div>
+              </div>
+              <div class="box">
+                  <div class="box-icon">
+                      <img src="{{asset('images/segmentos.svg')}}" alt="">
+                  </div>
+                  <div class="box-description">
+                      <p>
+                          <span>7001+</span> <br>
+                          Segmentos
+                      </p>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
 
 
 

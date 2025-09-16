@@ -111,7 +111,62 @@ input[type="date"]::-ms-expand {
         margin: 0 0 15px 0;
         position: relative;
     }
-
+    .section-beneficios-content {
+        margin: 0 15px;
+    }
+    .section-beneficios-desc .section-beneficios-content .dot img{
+        width: 20px;
+    }
+    .number-contents {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 35px;
+    }
+    .number-contents .box p{
+        line-height: 1.2;
+        color: #000;
+        opacity: 1;
+        padding: 0 10px;
+    }
+    .number-contents .box span{
+        font-weight: 600;
+        font-size: 43px;
+    }
+    .number-contents .box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .number-contents .box .box-icon {
+        width: 89px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 89px;
+        background-color: #fff;
+        border-radius: 16px;
+        box-shadow: 15px 16px 20px rgba(0, 0, 0, 0.07);
+    }
+    .section-beneficios-desc .section-beneficios-content .dot{
+        position: absolute;
+        background-color: #F46E00;
+        width: 54px;
+        height: 54px;
+        top: 0;
+        right: 0;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .section-beneficios-desc .section-beneficios-content p{
+        color: #000;
+        opacity: 1;
+        max-width: 300px;
+    }
+    .section-beneficios-desc .section-content{
+        padding: 60px 0;
+    }
     .destination-content .destination-description h3{
         font-size: 24px;
         font-weight: 400;
@@ -121,6 +176,16 @@ input[type="date"]::-ms-expand {
         position: absolute;
         top: 15px;
         left: 15px;
+    }
+
+    .section-beneficios-desc p {
+        font-size: 20px;
+        opacity: 49%;
+
+    }
+    .section-beneficios-desc h1 {
+        font-size: 50px;
+        font-weight: bold;
     }
     .destination-content .destination-text-description {
         font-size: 16px;
