@@ -10,6 +10,8 @@ export default defineConfig({
                 'resources/css/default.css',
                 'resources/css/pages/parceiros.css',
                 'resources/css/pages/o-que-e.css',
+                'resources/css/pages/home.css',
+                'resources/css/pages/beneficios.css',
             ],
             refresh: true,
         }),
