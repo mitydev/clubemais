@@ -1,0 +1,300 @@
+html, body { width: 100%; overflow-x: hidden; }
+
+/* Evita artefatos quando alguém usa 100vw */
+:root { --vw: 1vw; }
+.full-bleed,
+.fix-bleed {
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  width: 100vw;
+}
+
+/* ===================== DESTINOS (mobile/tablet) ===================== */
+@media (max-width: 1023px){
+  .destination-content{
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+    padding:0 16px 8px;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+  }
+  .destination-content::-webkit-scrollbar{ display:none; }
+  .destination-block{
+    flex:0 0 78%;
+    max-width:78%;
+    min-height:380px;
+    border-radius:20px;
+    scroll-snap-align:start;
+    transform:none !important;
+  }
+  .destination-block .destination-description{ padding:16px; }
+  .destination-text-title{ font-size:18px; line-height:1.2; }
+  .destination-text-description{ font-size:13px; }
+}
+@media (min-width:768px) and (max-width:1023px){
+  .destination-block{ flex-basis:46%; max-width:46%; }
+}
+@media (hover:none){
+  .destination-block:hover{ transform:none; }
+}
+
+/* Inputs e botão de busca */
+input[type="date"]{ -webkit-appearance:none; appearance:none; background-color:#fff; }
+.search-btn img{ aspect-ratio:1/1; object-fit:contain; }
+
+/* ===================== VANTAGENS (estrutura geral) ===================== */
+.vantagens-section{
+  position: relative;
+  overflow: clip;
+  background-color: #F4F1EA;
+}
+
+/* ===================== VANTAGENS — MOBILE ONLY ===================== */
+/* Estes ajustes valem só até 767px e NÃO alteram o desktop */
+@media (max-width: 767px){
+
+  /* container principal da seção (primeiro filho da section) */
+  .section-vantagens > div{
+    height: auto !important;                /* ignora h-[636px] */
+    padding: 20px 16px !important;          /* respiro lateral */
+    background-size: 120vw auto !important; /* evita “empurrar” a tela p/ os lados */
+    background-position: 110% 18% !important;
+  }
+
+  /* título menor e com espaçamento mais justo */
+  .section-vantagens h2{
+    font-size: 28px !important;
+    line-height: 1.2 !important;
+    margin: 0 0 8px 0;
+    max-width: 85%;
+  }
+
+  /* linha dos 3 cartões amarelos -> vira carrossel horizontal */
+  .section-vantagens .flex.max-w-\[620px\]{
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-top: 18px !important;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 0 0 8px 2px;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+  .section-vantagens .flex.max-w-\[620px\]::-webkit-scrollbar{ display:none; }
+
+  /* cada “card wrapper” */
+  .section-vantagens .flex.max-w-\[620px\] > .relative{
+    flex: 0 0 10%;
+    max-width: 66%;
+    scroll-snap-align: start;
+  }
+    .section-vantagens .flex.max-w-\[620px\] .button-assine-ja{
+        display: none;
+    }
+
+    .button-assine-ja-mobile{
+        padding: 0 16px;
+        margin-top: 12px;
+    }
+    .button-assine-ja-mobile button{
+        width: 100%;
+        height: 56px;
+        border-radius: 9999px;
+        font-size: 20px;
+        font-weight: 600;
+        background-color: #39C0F2;
+        color: #fff;
+    }
+
+  /* esconde o ponto azul (dot) no topo dos cards no mobile */
+  .section-vantagens .dot{ display: none; }
+
+  /* botão ASSINE JÁ vira full-width após os cards */
+  .section-vantagens .button-assine-ja{
+    position: static !important;
+    width: 100%;
+    margin-top: 12px;
+  }
+  .section-vantagens .button-assine-ja button{
+    width: 100%;
+    height: 56px;
+    border-radius: 9999px;
+    font-size: 20px;
+    font-weight: 600;
+    background-color: #39C0F2;  /* mantém a cor do projeto */
+    color: #fff;
+  }
+
+  /* faixa de badges vira rolagem horizontal compacta */
+  .section-vantagens .grid.grid-cols-2{
+    display: block;              /* ignora grid fixo do tailwind para mobile */
+    margin: 10px 0 0 0;
+  }
+  .section-vantagens .grid.grid-cols-2 .flex{
+    gap: 10px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 10px 2px 6px;
+  }
+  .section-vantagens .grid.grid-cols-2 .flex::-webkit-scrollbar{ display:none; }
+  .section-vantagens .badge{
+    flex: 0 0 84px;              /* largura confortável de cada ícone */
+  }
+}
+
+/* ===== VANTAGENS — até 1023px (mobile + tablet) ===== */
+@media (max-width: 1023px){
+
+  /* container principal */
+  .section-vantagens > div{
+    height: auto !important;
+    padding: 20px 16px !important;
+    background-size: 120vw auto !important;
+    background-position: 110% 18% !important;
+  }
+
+  /* título mais compacto */
+  .section-vantagens h2{
+    font-size: 28px !important;
+    line-height: 1.2 !important;
+    margin: 0 0 8px 0;
+    max-width: 85%;
+  }
+
+  /* linha dos 3 cartões -> carrossel */
+  .section-vantagens .flex.max-w-\[620px\]{
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-top: 18px !important;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 0 0 8px 2px;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+  .section-vantagens .flex.max-w-\[620px\]::-webkit-scrollbar{ display:none; }
+
+  /* cada card (corrige o 10% -> 66%) */
+  .section-vantagens .flex.max-w-\[620px\] > .relative{
+    flex: 0 0 10%;
+    max-width: 66%;
+    scroll-snap-align: start;
+  }
+
+  /* esconde o botão original (dentro da fileira) */
+  .section-vantagens .flex.max-w-\[620px\] .button-assine-ja{
+    display: none !important;
+  }
+
+  /* mostra o botão fora, embaixo dos ícones */
+  .button-assine-ja-mobile{
+    display: block;
+    padding: 0 16px;
+    margin-top: 12px;
+  }
+  .button-assine-ja-mobile button{
+    width: 100%;
+    height: 56px;
+    border-radius: 9999px;
+    font-size: 20px;
+    font-weight: 600;
+    background-color: #39C0F2;
+    color: #fff;
+  }
+
+  /* some o “dot” azul no topo dos cards */
+  .section-vantagens .dot{ display: none; }
+
+  /* faixa de badges vira rolagem horizontal */
+  .section-vantagens .grid.grid-cols-2{
+    display: block;
+    margin: 10px 0 0 0;
+  }
+  .section-vantagens .grid.grid-cols-2 .flex{
+    gap: 10px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 10px 2px 6px;
+  }
+  .section-vantagens .grid.grid-cols-2 .flex::-webkit-scrollbar{ display:none; }
+  .section-vantagens .badge{ flex: 0 0 84px; }
+}
+
+/* mantém o hover para o desktop normalmente */
+.btn-assine{ transition: transform .15s ease, box-shadow .15s ease; }
+.btn-assine:hover{ transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,.12); }
+
+
+/* ===================== VANTAGENS — (demais elementos) ===================== */
+/* Cards container (desktop permanece como estava) */
+.vantagens-cards{
+  display:flex;
+  gap:16px;
+  overflow-x:auto;
+  padding-bottom:8px;
+  -webkit-overflow-scrolling:touch;
+}
+.vantagens-cards::-webkit-scrollbar{ display:none; }
+
+/* Card base */
+.vant-card{
+  position:relative;
+  flex:0 0 178px;
+}
+@media (max-width:767px){
+  .vant-card{ flex-basis:150px; }
+}
+
+/* “gota” azul do topo (escondida no mobile via bloco acima) */
+.vant-card-dot{
+  position:absolute;
+  right:-12px; top:-12px;
+  width:40px; height:40px;
+  border-radius:9999px;
+  background:#3FD0FC;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 2px 0 rgba(0,0,0,.08) inset;
+}
+.vant-card-dot img{ width:22px; height:22px; }
+
+/* Clip do cartão amarelo */
+.vant-card-clip{
+  background:#E8CC00;
+  width:178px; height:243px;
+  -webkit-clip-path:url(#shape);
+  clip-path:url(#shape);
+  border-radius:20px; /* fallback */
+}
+@media (max-width:767px){
+  .vant-card-clip{ width:150px; height:210px; }
+}
+
+/* Botão ASSINE (hover genérico) */
+.btn-assine{ transition:transform .15s ease, box-shadow .15s ease; }
+.btn-assine:hover{ transform:translateY(-1px); box-shadow:0 8px 24px rgba(0,0,0,.12); }
+
+/* Badges (desktop) */
+.badge{ display:flex; align-items:center; justify-content:center; }
+
+/* ===================== OTA / ELEMENTOR WRAPPER ===================== */
+.otabuilder-area { background: transparent; }
+
+@supports(padding: max(0px)) {
+  .otabuilder-area .container{
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+}
+
+/* Widget 100% no container */
+.otabuilder-area .elementor { width: 100%; }
+#otabuilder-widget { width: 100%; }
+
+/* Caixa do widget (opcional) */
+.otabuilder-area #otabuilder-widget {
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 8px 24px rgba(0,0,0,.06);
+  background:#fff;
+}

@@ -180,7 +180,7 @@ input[type="date"]::-ms-expand {
 
     .section-beneficios-desc p {
         font-size: 20px;
-        opacity: 49%;
+        opacity: .49;
 
     }
     .section-beneficios-desc h1 {
@@ -224,9 +224,6 @@ input[type="date"]::-ms-expand {
 
     }
 
-    .section-vantagens .button-assine-ja {
-
-    }
     .section-vantagens .button-assine-ja {
         /* w-[267px] h-[73px] bg-[#3FD0FC]*/
         right: -325px;
