@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Clube+ | O que é</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/plus.png') }}">
+
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -100,7 +102,7 @@
 
   <!-- ===== Depoimentos ===== -->
   <section class="depo bg-[#39C0F2] relative overflow-hidden">
-     
+
     <div class="depo-band" aria-hidden="true"></div>
     <div class="section-inner relative z-[1]">
       <h2 class="text-white text-[34px] md:text-[42px] font-extrabold mb-8">Depoimentos</h2>
