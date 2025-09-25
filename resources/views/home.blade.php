@@ -5,13 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Clube + Seu clube de benefícios</title>
 
-    <link rel="icon" type="image/png" href="{{ asset('images/plus.png') }}">
+  <link rel="icon" type="image/png" href="{{ asset('images/plus.png') }}">
+
+  {{-- CSRF para POST no Laravel --}}
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  {{-- Flatpickr (calendário cross-browser) --}}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+  <style>
+  </style>
 
   @vite(['resources/css/default.css','resources/css/app.css', 'resources/css/pages/home.css' , 'resources/js/app.js'])
 </head>
@@ -31,17 +39,21 @@
 
       <!-- CARD FORM -->
       <div class="w-full bg-white rounded-3xl p-3 sm:p-4">
-        <!-- 1 col mobile, 2 cols tablet, 5 cols desktop -->
         <div class="grid gap-2 sm:gap-3 md:gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_1fr_100px] items-end">
           <!-- Localização -->
           <div class="p-2 sm:p-3">
             <p class="mb-2 text-[#F46E00] font-bold text-sm sm:text-base">Localização</p>
             <div class="relative">
-              <span class="absolute left-3 top-1/2 -translate-y-1/2">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                 <img src="{{asset('images/location.svg')}}" alt="location">
               </span>
-              <input type="text" placeholder="Pesquise por Hotel/Cidade"
-                     class="w-full pl-10 pr-4 h-11 sm:h-12 rounded-full border border-gray-300 text-[14px] sm:text-[15px] placeholder-[#A5A5A5] focus:ring-indigo-500 focus:border-indigo-500">
+              <select id="select-filter"
+                      class="w-full pl-10 pr-4 h-11 sm:h-12 rounded-full border border-gray-300 text-[14px] sm:text-[15px] focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="">Selecione uma categoria</option>
+                @foreach(($termos ?? []) as $termo)
+                  <option value="{{ $termo->id }}">{{ $termo->name }}</option>
+                @endforeach
+              </select>
             </div>
           </div>
 
@@ -49,11 +61,11 @@
           <div class="p-2 sm:p-3">
             <p class="mb-2 text-[#F46E00] font-bold text-sm sm:text-base">Check-in</p>
             <div class="relative">
-              <span class="absolute left-3 top-1/2 -translate-y-1/2">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                 <img src="{{asset('images/calendar.svg')}}" alt="calendar">
               </span>
-              <input type="date"
-                     class="w-full pl-10 pr-4 h-11 sm:h-12 rounded-full border border-gray-300 text-[14px] sm:text-[15px] placeholder-[#A5A5A5] focus:ring-indigo-500 focus:border-indigo-500">
+              <input id="checkin" type="text" placeholder="dd/mm/aaaa"
+                     class="js-date w-full pl-10 pr-4 h-11 sm:h-12 rounded-full border border-gray-300 text-[14px] sm:text-[15px] placeholder-[#A5A5A5] focus:ring-indigo-500 focus:border-indigo-500">
             </div>
           </div>
 
@@ -61,11 +73,11 @@
           <div class="p-2 sm:p-3">
             <p class="mb-2 text-[#F46E00] font-bold text-sm sm:text-base">Check-out</p>
             <div class="relative">
-              <span class="absolute left-3 top-1/2 -translate-y-1/2">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                 <img src="{{asset('images/calendar.svg')}}" alt="calendar">
               </span>
-              <input type="date"
-                     class="w-full pl-10 pr-4 h-11 sm:h-12 rounded-full border border-gray-300 text-[14px] sm:text-[15px] placeholder-[#A5A5A5] focus:ring-indigo-500 focus:border-indigo-500">
+              <input id="checkout" type="text" placeholder="dd/mm/aaaa"
+                     class="js-date w-full pl-10 pr-4 h-11 sm:h-12 rounded-full border border-gray-300 text-[14px] sm:text-[15px] placeholder-[#A5A5A5] focus:ring-indigo-500 focus:border-indigo-500">
             </div>
           </div>
 
@@ -73,7 +85,7 @@
           <div class="p-2 sm:p-3">
             <p class="mb-2 text-[#F46E00] font-bold text-sm sm:text-base">Hóspedes</p>
             <div class="relative">
-              <span class="absolute left-3 top-1/2 -translate-y-1/2">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                 <img src="{{asset('images/users.svg')}}" alt="ícone usuários">
               </span>
               <select class="w-full pl-10 pr-4 h-11 sm:h-12 rounded-full border border-gray-300 text-[14px] sm:text-[15px] focus:ring-indigo-500 focus:border-indigo-500">
@@ -85,21 +97,31 @@
           </div>
 
           <!-- Botão buscar -->
-            <div class="p-2 sm:p-3 xl:p-0">
-                <a href="#" class="block search-btn">
-                    <img
-                    src="{{ asset('images/button-select.svg') }}"
-                    alt="Buscar"
-                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 xl:w-auto xl:h-[89px] object-contain"
-                    >
-                </a>
-            </div>
+          <div class="p-2 sm:p-3 xl:p-0">
+            <a href="#" class="block search-btn" aria-label="Buscar">
+              <img
+                src="{{ asset('images/button-select.svg') }}"
+                alt="Buscar"
+                class="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 xl:w-auto xl:h-[89px] object-contain"
+              >
+            </a>
+          </div>
         </div>
       </div>
 
     </div>
   </div>
 </section>
+
+{{-- Container onde os resultados serão injetados --}}
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 py-8">
+  <div id="search-status" class="loader" aria-live="polite">
+    <div class="spinner" aria-hidden="true"></div>
+    <span>Carregando resultados…</span>
+  </div>
+  <div id="search-results-container"></div>
+  <div id="search-error" class="error-box mt-3" style="display:none;"></div>
+</div>
 
 <!-- ================= O QUE É O CLUBE + ================= -->
 <section>
@@ -145,7 +167,6 @@
       </h2>
 
       <div class="destination-content mt-4 md:mt-6 flex justify-between md:justify-between">
-        <!-- 1 -->
         <div class="destination-block active bg-center bg-cover bg-no-repeat"
              style="background-image:url('{{asset("images/wanderlust.png")}}')">
           <div class="destination-description">
@@ -164,7 +185,6 @@
           </div>
         </div>
 
-        <!-- 2 -->
         <div class="destination-block bg-center bg-cover bg-no-repeat"
              style="background-image:url('{{asset("images/bravamundo.png")}}')">
           <div class="destination-description">
@@ -179,7 +199,6 @@
           </div>
         </div>
 
-        <!-- 3 -->
         <div class="destination-block bg-center bg-cover bg-no-repeat"
              style="background-image:url('{{asset("images/poehma.png")}}')">
           <div class="destination-description">
@@ -194,7 +213,6 @@
           </div>
         </div>
 
-        <!-- 4 -->
         <div class="destination-block bg-center bg-cover bg-no-repeat"
              style="background-image:url('{{asset("images/poehma.png")}}')">
           <div class="destination-description">
@@ -214,175 +232,46 @@
   </div>
 </section>
 
-<!-- ================= LOGOS / SWIPER ================= -->
-<section class="bg-[#F46E00]">
-  <div class="w-full">
-    <div class="swiper">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide"><div class="w-full flex justify-center"><img src="{{asset('images/logoipsum.png')}}" class="m-auto" alt="logo"></div></div>
-        <div class="swiper-slide"><div class="w-full flex justify-center"><img src="{{asset('images/loqo.png')}}" class="m-auto" alt="logo"></div></div>
-        <div class="swiper-slide"><div class="w-full flex justify-center"><img src="{{asset('images/logoipsum.png')}}" class="m-auto" alt="logo"></div></div>
-        <div class="swiper-slide"><div class="w-full flex justify-center"><img src="{{asset('images/logoipsum.png')}}" class="m-auto" alt="logo"></div></div>
-        <div class="swiper-slide"><div class="w-full flex justify-center"><img src="{{asset('images/logoipsum.png')}}" class="m-auto" alt="logo"></div></div>
-        <div class="swiper-slide"><div class="w-full flex justify-center"><img src="{{asset('images/logoipsum.png')}}" class="m-auto" alt="logo"></div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="max-w-[1440px] mx-auto beneficios px-4 sm:px-6">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-4">
-      <div class="conheca">
-        <h1 class="text-[26px] sm:text-[32px] md:text-[36px] leading-tight text-white">
-          Conheça alguns benefícios de quem é Clube +
-        </h1>
-      </div>
-      <div class="flex md:justify-end items-end">
-        <p class="text-white text-[14px] md:text-[16px] max-w-[485px]">
-          Lorem ipsum lorem nimo ommolum qui auda sundi num quisque proresequis modic to berrovidem.
-        </p>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 py-4">
-      <div class="banner-veja-mais order-last md:order-first">
-        <img src="{{asset('images/veja-mais.png')}}" class="w-full" alt="">
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:col-span-2">
-        {{-- 4 cards existentes inalterados --}}
-        <div class="content-block-beneficios">
-          <div class="content-banner-beneficios h-[275px] bg-cover bg-center" style="background-image:url('{{asset('images/uber.jpg')}}')">
-            <div class="dot"><img src="{{asset('images/badge.png')}}" alt="badge"></div>
-          </div>
-          <div class="content-beneficios-description">
-            <h2 class="flex justify-between text-[22px] md:text-[24px] font-bold"><span>Uber</span><span>8% Desc</span></h2>
-            <div class="flex justify-between">
-              <span class="text-[14px] md:text-[16px]">São Paulo, Rio de Janeiro</span>
-              <div class="flex">@for($i=0;$i<5;$i++)<img src="{{asset('images/star.svg')}}" alt="">@endfor</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="content-block-beneficios">
-          <div class="content-banner-beneficios h-[275px] bg-cover bg-center" style="background-image:url('{{asset('images/americanas.png')}}')">
-            <div class="dot"><img src="{{asset('images/badge.png')}}" alt="badge"></div>
-          </div>
-          <div class="content-beneficios-description">
-            <h2 class="flex justify-between text-[22px] md:text-[24px] font-bold"><span>Americanas</span><span>20% Desc</span></h2>
-            <div class="flex justify-between">
-              <span class="text-[14px] md:text-[16px]">Búzios, Paraná</span>
-              <div class="flex">@for($i=0;$i<5;$i++)<img src="{{asset('images/star.svg')}}" alt="">@endfor</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="content-block-beneficios">
-          <div class="content-banner-beneficios h-[275px] bg-cover bg-center" style="background-image:url('{{asset('images/farmacias.png')}}')">
-            <div class="dot"><img src="{{asset('images/badge.png')}}" alt="badge"></div>
-          </div>
-          <div class="content-beneficios-description">
-            <h2 class="flex justify-between text-[22px] md:text-[24px] font-bold"><span>Farmácias</span><span>5% Desc</span></h2>
-            <div class="flex justify-between">
-              <span class="text-[14px] md:text-[16px]">Balneário, São Paulo</span>
-              <div class="flex">@for($i=0;$i<5;$i++)<img src="{{asset('images/star.svg')}}" alt="">@endfor</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="content-block-beneficios">
-          <div class="content-banner-beneficios h-[275px] bg-cover bg-center" style="background-image:url('{{asset('images/gol.png')}}')">
-            <div class="dot"><img src="{{asset('images/badge.png')}}" alt="badge"></div>
-          </div>
-          <div class="content-beneficios-description">
-            <h2 class="flex justify-between text-[22px] md:text-[24px] font-bold"><span>Gol</span><span>10% Desc</span></h2>
-            <div class="flex justify-between">
-              <span class="text-[14px] md:text-[16px]">Bahia, Santa Catarina</span>
-              <div class="flex">@for($i=0;$i<5;$i++)<img src="{{asset('images/star.svg')}}" alt="">@endfor</div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ================= VANTAGENS ================= -->
 <section class="bg-[#F4F1EA] section-vantagens">
   <div
     class="max-w-[1920px] mx-auto h-[636px] p-4 bg-left bg-no-repeat"
     style="background-size:1440px; background-image:url('{{ asset('images/vantagens.png') }}')"
   >
-    <!-- Título -->
     <div class="max-w-[600px] m-[50px]">
-      <h2 class="font-semibold text-[50px]">
-        Conheça as vantagens e assinaturas do Clube+
-      </h2>
+      <h2 class="font-semibold text-[50px]">Conheça as vantagens e assinaturas do Clube+</h2>
     </div>
 
-    <!-- 3 cards amarelos -->
     <div class="flex max-w-[620px] ml-[60px] mt-[90px] justify-between relative">
-      <!-- Card 1 -->
       <div class="relative">
-        <div class="dot">
-          <img src="{{ asset('images/arrow_outward.svg') }}" alt="" />
-        </div>
-        <div
-          class="relative"
-          style="clip-path:url(#shape); width:178px; height:243px; background:#E8CC00; padding-top:40px"
-        >
-          <div class="h-max">
-            <div class="h-max p-4">
-              <img src="{{ asset('images/cash.svg') }}" class="mb-4" alt="" />
-              <p class="font-bold" style="font-size:20px">Desconto em passagens</p>
-            </div>
-          </div>
+        <div class="dot"><img src="{{ asset('images/arrow_outward.svg') }}" alt="" /></div>
+        <div class="relative" style="clip-path:url(#shape); width:178px; height:243px; background:#E8CC00; padding-top:40px">
+          <div class="h-max"><div class="h-max p-4"><img src="{{ asset('images/cash.svg') }}" class="mb-4" alt="" />
+            <p class="font-bold" style="font-size:20px">Desconto em passagens</p></div></div>
         </div>
       </div>
 
-      <!-- Card 2 -->
       <div class="relative">
-        <div class="dot">
-          <img src="{{ asset('images/arrow_outward.svg') }}" alt="" />
-        </div>
-        <div
-          class="relative"
-          style="clip-path:url(#shape); width:178px; height:243px; background:#E8CC00; padding-top:40px"
-        >
-          <div class="h-max">
-            <div class="h-max p-4">
-              <img src="{{ asset('images/cash.svg') }}" class="mb-4" alt="" />
-              <p class="font-bold" style="font-size:20px">Descontos em mais de 80 hotéis</p>
-            </div>
-          </div>
+        <div class="dot"><img src="{{ asset('images/arrow_outward.svg') }}" alt="" /></div>
+        <div class="relative" style="clip-path:url(#shape); width:178px; height:243px; background:#E8CC00; padding-top:40px">
+          <div class="h-max"><div class="h-max p-4"><img src="{{ asset('images/cash.svg') }}" class="mb-4" alt="" />
+            <p class="font-bold" style="font-size:20px">Descontos em mais de 80 hotéis</p></div></div>
         </div>
       </div>
 
-      <!-- Card 3 -->
       <div class="relative">
-        <div class="dot">
-          <img src="{{ asset('images/arrow_outward.svg') }}" alt="" />
-        </div>
-        <div
-          class="relative"
-          style="clip-path:url(#shape); width:178px; height:243px; background:#E8CC00; padding-top:40px"
-        >
-          <div class="h-max">
-            <div class="h-max p-4">
-              <img src="{{ asset('images/cash.svg') }}" class="mb-4" alt="" />
-              <p class="font-bold" style="font-size:20px">Descontos em mais de 50 lojas</p>
-            </div>
-          </div>
+        <div class="dot"><img src="{{ asset('images/arrow_outward.svg') }}" alt="" /></div>
+        <div class="relative" style="clip-path:url(#shape); width:178px; height:243px; background:#E8CC00; padding-top:40px">
+          <div class="h-max"><div class="h-max p-4"><img src="{{ asset('images/cash.svg') }}" class="mb-4" alt="" />
+            <p class="font-bold" style="font-size:20px">Descontos em mais de 50 lojas</p></div></div>
         </div>
       </div>
 
-      <!-- Botão -->
       <div class="absolute bottom-0 button-assine-ja">
         <button>ASSINE JÁ</button>
       </div>
-
     </div>
 
-    <!-- Faixa de badges -->
     <div class="max-w-full my-4 mx-4 grid grid-cols-2">
       <div class="flex w-full max-w-full m-auto justify-between">
         <div class="badge"><img src="{{ asset('images/badge/moneybadge.svg') }}" alt="" /></div>
@@ -397,18 +286,14 @@
     </div>
 
     <div class="button-assine-ja-mobile">
-        <button>ASSINE JÁ</button>
+      <button>ASSINE JÁ</button>
     </div>
   </div>
 </section>
 
-
 <!-- Elementor widget (inalterado) -->
-<!-- SEARCH / OTA (com respiro lateral) -->
 <section style="display: none;" class="otabuilder-area py-6 sm:py-8">
   <div class="container max-w-[1280px] mx-auto px-4 sm:px-6 md:px-8">
-
-    <!-- Elementor widget (inalterado por dentro) -->
     <div data-elementor-type="wp-page" data-elementor-id="1056" class="elementor elementor-1056" data-elementor-post-type="page">
       <div class="elementor-element elementor-element-84543a9 e-flex e-con-boxed e-con e-parent" data-id="84543a9" data-element_type="container" data-settings='{"background_background":"classic","_ha_eqh_enable":false}' data-core-v316-plus="true">
         <div class="e-con-inner">
@@ -452,6 +337,9 @@
 @include('components.footer')
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+
 <script type="application/javascript">
   // Hover dos cards de destino
   const blocks = document.querySelectorAll('.destination-block');
@@ -464,20 +352,175 @@
 
   // Swiper com breakpoints
   const swiper = new Swiper('.swiper', {
-    slidesPerView: 5,
-    loop: true,
-    speed: 3000,
-    grabCursor: true,
-    spaceBetween: 16,
-    freeMode: true,
+    slidesPerView: 5, loop: true, speed: 3000, grabCursor: true, spaceBetween: 16, freeMode: true,
     autoplay: { delay: 0, disableOnInteraction: false },
-    breakpoints: {
-      0:   { slidesPerView: 2, spaceBetween: 12 },
-      480: { slidesPerView: 3, spaceBetween: 12 },
-      768: { slidesPerView: 4, spaceBetween: 14 },
-      1024:{ slidesPerView: 5, spaceBetween: 16 },
+    breakpoints: { 0:{slidesPerView:2,spaceBetween:12},480:{slidesPerView:3,spaceBetween:12},768:{slidesPerView:4,spaceBetween:14},1024:{slidesPerView:5,spaceBetween:16} }
+  });
+
+  // Calendário (Flatpickr)
+  (function(){
+    const inEl  = document.getElementById('checkin');
+    const outEl = document.getElementById('checkout');
+
+    const today = new Date();
+    const fpOut = flatpickr(outEl, {
+      locale: flatpickr.l10ns.pt,
+      dateFormat: 'd/m/Y',
+      minDate: new Date(today.getTime() + 24*60*60*1000),
+    });
+
+    flatpickr(inEl, {
+      locale: flatpickr.l10ns.pt,
+      dateFormat: 'd/m/Y',
+      minDate: today,
+      onChange: function(selectedDates) {
+        if (selectedDates[0]) {
+          const minOut = new Date(selectedDates[0].getTime());
+          minOut.setDate(minOut.getDate() + 1);
+          fpOut.set('minDate', minOut);
+          if (!fpOut.selectedDates[0] || fpOut.selectedDates[0] <= selectedDates[0]) {
+            fpOut.setDate(minOut, true);
+          }
+        }
+      }
+    });
+  })();
+</script>
+
+{{-- Helpers de rolagem suave e estabilidade de imagens --}}
+<script>
+  // Easing suave para o scroll
+  function smoothScrollTo(targetY, duration = 750) {
+    const startY = window.scrollY || window.pageYOffset;
+    const diff   = Math.max(0, targetY) - startY;
+    if (Math.abs(diff) < 2) return;
+
+    let start;
+    const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+
+    function step(ts) {
+      if (!start) start = ts;
+      const p = Math.min(1, (ts - start) / duration);
+      const y = startY + diff * easeOutCubic(p);
+      window.scrollTo(0, y);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // Aguarda imagens decodificarem no container
+  async function waitImages(el) {
+    const imgs = Array.from(el.querySelectorAll('img'));
+    await Promise.all(imgs.map(img => {
+      if (img.complete) return Promise.resolve();
+      return (img.decode ? img.decode() : new Promise(r => img.addEventListener('load', r, { once:true })))
+             .catch(()=>{});
+    }));
+  }
+</script>
+
+{{-- Busca Ajax com loader + transição sem salto --}}
+<script>
+(function() {
+  const token    = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+  const select   = document.getElementById('select-filter');
+  const results  = document.getElementById('search-results-container');
+  if (results && results.innerHTML.trim() !== '') results.classList.add('show');
+  const loader   = document.getElementById('search-status');
+  const errBox   = document.getElementById('search-error');
+  const btn      = document.querySelector('.search-btn');
+
+  function showLoader(on=true){
+    loader.classList.toggle('on', on);
+    if (btn) btn.classList.toggle('pointer-events-none', on);
+  }
+  function showError(msg){
+    errBox.style.display = 'block';
+    errBox.textContent = msg || 'Não foi possível carregar os resultados. Tente novamente.';
+  }
+  function clearError(){ errBox.style.display = 'none'; errBox.textContent = ''; }
+
+  // >>> versão com suavidade e sem salto <<<
+  async function loadFragmentInto(url, targetEl) {
+    // tira o estado visível e congela a altura atual para evitar pulo
+    targetEl.classList.remove('show');
+    const prevMin = targetEl.style.minHeight;
+    targetEl.style.minHeight = targetEl.offsetHeight ? targetEl.offsetHeight + 'px' : '220px';
+
+    const res = await fetch(url, { credentials: 'same-origin' });
+    if (!res.ok) throw new Error('Falha ao carregar: ' + res.status);
+
+    const html = await res.text();
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+    const frag = temp.querySelector('#main-content');
+    if (!frag) throw new Error('Fragmento #main-content não encontrado.');
+
+    // injeta novo conteúdo
+    targetEl.innerHTML = frag.outerHTML;
+
+    // espera imagens para estabilizar layout
+    await waitImages(targetEl);
+
+    // reativa transição e faz scroll com easing
+    requestAnimationFrame(() => {
+      targetEl.style.minHeight = '';
+      targetEl.classList.add('show');
+      const offset = 24;
+      const y = targetEl.getBoundingClientRect().top + window.scrollY - offset;
+      smoothScrollTo(y, 750);
+    });
+  }
+
+  async function onSearchClick(e) {
+    e.preventDefault();
+    clearError();
+    const termId = select?.value;
+    if (!termId) {
+      showError('Escolha uma categoria para buscar.');
+      return;
+    }
+
+    try {
+      showLoader(true);
+      const res = await fetch('{{ route('ajax.taxonomy.slug') }}', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token },
+        body: JSON.stringify({ term_id: Number(termId) })
+      });
+
+      const slug = await res.text();
+      if (!res.ok || !slug || slug === 'error') {
+        throw new Error('Erro ao obter a categoria selecionada.');
+      }
+
+      const newPath = `/local/${slug}`;
+      await loadFragmentInto(newPath, results);
+      history.pushState({ fromAjax: true }, '', newPath);
+    } catch (err) {
+      console.error(err);
+      showError(err.message);
+    } finally {
+      showLoader(false);
+    }
+  }
+
+  if (btn) btn.addEventListener('click', onSearchClick);
+
+  // Suporte a voltar/avançar
+  window.addEventListener('popstate', async () => {
+    clearError();
+    const path = location.pathname;
+    if (/^\/local\/.+/.test(path)) {
+      try { showLoader(true); await loadFragmentInto(path, results); }
+      catch (e) { showError('Não foi possível restaurar os resultados.'); }
+      finally { showLoader(false); }
+    } else {
+      results.innerHTML = '';
+      results.classList.remove('show');
     }
   });
+})();
 </script>
 </body>
 </html>
