@@ -21,9 +21,20 @@
 
       <!-- AÇÕES DESKTOP (só >= 1024px) -->
       <div class="hidden lg:flex items-center gap-4">
-        <a href="#" class="px-5 py-2 bg-[#F46E00] text-white rounded-full hover:brightness-110">
-          Login
-        </a>
+          @if(auth()->check())
+              <form action="{{ route('logout') }}" method="POST">
+                  @csrf
+                  <button type="submit"
+                          class="px-5 py-2 bg-red-600 text-white rounded-full hover:brightness-110">
+                      Sair
+                  </button>
+              </form>
+          @else
+              <a href="{{ route('login') }}"
+                 class="px-5 py-2 bg-[#F46E00] text-white rounded-full hover:brightness-110">
+                  Login
+              </a>
+          @endif
         <!-- o “menu” de três linhas no desktop causava ruído; esconda-o -->
         <!-- <button class="hidden xl:block">…</button> -->
       </div>

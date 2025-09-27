@@ -126,11 +126,11 @@
 <!-- ================= O QUE É O CLUBE + ================= -->
 <section>
   <div
-    class="max-w-[1920px] bg-center bg-cover bg-[#F4F1EA] min-h-[clamp(640px,100vh,1080px)] mx-auto pt-10 md:pt-10"
+    class="bg-center bg-no-repeat bg-cover max-h-[100vh] pt-10"
     style="background-image:url('{{asset('images/banner-oq-é 1.png')}}');">
 
     <div class="ml-4 sm:ml-8 md:ml-12 relative w-[320px] sm:w-[420px] md:w-[500px] h-[360px] sm:h-[440px] md:h-[500px] bg-no-repeat bg-contain"
-         style="background-image:url('{{asset('images/Subtract.svg')}}')">
+         style="background-image:url('{{asset('images/oque-e.png')}}'); ">
       <div class="absolute top-5 right-0">
         <svg width="72" height="83" viewBox="0 0 72 83" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 59.2768C0 72.1619 9.72216 82.6044 21.7099 82.6044H71.7645C71.7494 82.2034 71.708 81.8064 71.708 81.4013V0H0v59.2768Zm38.5343-42.2277c2.3938 0 4.3389 2.0902 4.3389 4.6704v12.0749h11.2452c2.3937 0 4.3389 2.0982 4.3389 4.6704v5.683c0 2.5802-1.9452 4.6703-4.3389 4.6703H42.8732V60.893c0 2.5803-1.9451 4.6704-4.3389 4.6704h-5.2965c-2.3938 0-4.3465-2.1897-4.3465-4.7701V48.8181H17.6537c-2.3938 0-4.3465-2.0901-4.3465-4.6703v-5.683c0-2.5722 1.9527-4.6704 4.3465-4.6704h11.2376V21.7195c0-2.5802 2.006-4.6704 4.3998-4.6704h5.2432Z" fill="white"/></svg>
       </div>
@@ -145,9 +145,9 @@
       </div>
     </div>
 
-    <div class="max-w-[1280px] mx-auto mt-8 md:mt-[50px] px-4 sm:px-6">
+    <div class="max-w-[1280px] mx-auto mt-[60px] sm:mt-8 px-4 sm:px-6">
       <div class="max-w-[680px]">
-        <h2 class="text-[28px] sm:text-[34px] md:text-[40px] leading-tight font-bold">
+        <h2 class="text-[22px] sm:text-[34px] md:text-[40px] leading-tight font-bold">
           Sua próxima viagem começa com vantagens!
         </h2>
         <p class="font-light opacity-50 mt-2 text-[14px] sm:text-[15px]">

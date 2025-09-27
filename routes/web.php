@@ -8,7 +8,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    if(auth()->user()->hasRole("admin")){
+        return view('dashboard');
+    }
+    return response()->redirectToRoute('home');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
