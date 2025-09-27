@@ -112,17 +112,17 @@
     </div>
   </div>
 </section>
-
-{{-- Container onde os resultados serão injetados --}}
-<div class="max-w-[1280px] mx-auto px-4 sm:px-6 py-8">
-  <div id="search-status" class="loader" aria-live="polite">
-    <div class="spinner" aria-hidden="true"></div>
-    <span>Carregando resultados…</span>
-  </div>
-  <div id="search-results-container"></div>
-  <div id="search-error" class="error-box mt-3" style="display:none;"></div>
-</div>
-
+@if(auth()->check())
+    {{-- Container onde os resultados serão injetados --}}
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 py-8">
+        <div id="search-status" class="loader" aria-live="polite">
+            <div class="spinner" aria-hidden="true"></div>
+            <span>Carregando resultados…</span>
+        </div>
+        <div id="search-results-container"></div>
+        <div id="search-error" class="error-box mt-3" style="display:none;"></div>
+    </div>
+@endif
 <!-- ================= O QUE É O CLUBE + ================= -->
 <section>
   <div
