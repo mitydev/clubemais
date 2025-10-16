@@ -30,17 +30,18 @@
 <!-- ================= HERO ================= -->
 <section class="bg-white">
   <div
-    class="max-w-[1920px] bg-center bg-cover min-h-[clamp(520px,100vh,1080px)] mx-auto bg-no-repeat flex justify-center items-center pt-[6rem] md:pt-[8rem] lg:pt-[10rem]"
-    style="background-image:url('{{asset('images/image_banner.png')}}')">
+    class="max-w-[1920px] bg-cover  min-h-[clamp(520px,90vh,1080px)] relative mx-auto bg-no-repeat flex justify-center items-center pt-[6rem] md:pt-[8rem] lg:pt-[10rem]"
+    style="background-image:url('{{asset('images/banner-home-1920.png')}}')">
     <div class="w-full max-w-[1204px] px-4 sm:px-6 md:px-8">
-      <h1 class="text-white leading-[1.1] my-6 mb-6 md:mb-[80px] text-[34px] sm:text-[40px] md:text-[48px] font-light">
-        Um Clube <br> <strong>pensado</strong> <br>em você!
-      </h1>
 
       <!-- CARD FORM -->
-      <div class="w-full bg-white rounded-3xl p-3 sm:p-4">
-        <div class="grid gap-2 sm:gap-3 md:gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_1fr_100px] items-end">
+      <div class=" bg-white rounded-3xl p-3 sm:p-4 absolute m-auto bottom-[50px]">
+        <div class="grid gap-2 sm:gap-3 md:gap-4 grid-cols-1 sm:grid-cols-1  items-end">
+            <div class="p-2 pt-4 sm:p-3">
+                <div id="otabuilder-widget"></div>
+            </div>
           <!-- Localização -->
+            <!--
           <div class="p-2 sm:p-3">
             <p class="mb-2 text-[#F46E00] font-bold text-sm sm:text-base">Localização</p>
             <div class="relative">
@@ -56,8 +57,9 @@
               </select>
             </div>
           </div>
-
+            -->
           <!-- Check-in -->
+            <!--
           <div class="p-2 sm:p-3">
             <p class="mb-2 text-[#F46E00] font-bold text-sm sm:text-base">Check-in</p>
             <div class="relative">
@@ -68,8 +70,10 @@
                      class="js-date w-full pl-10 pr-4 h-11 sm:h-12 rounded-full border border-gray-300 text-[14px] sm:text-[15px] placeholder-[#A5A5A5] focus:ring-indigo-500 focus:border-indigo-500">
             </div>
           </div>
+          -->
 
           <!-- Check-out -->
+            <!--
           <div class="p-2 sm:p-3">
             <p class="mb-2 text-[#F46E00] font-bold text-sm sm:text-base">Check-out</p>
             <div class="relative">
@@ -80,8 +84,9 @@
                      class="js-date w-full pl-10 pr-4 h-11 sm:h-12 rounded-full border border-gray-300 text-[14px] sm:text-[15px] placeholder-[#A5A5A5] focus:ring-indigo-500 focus:border-indigo-500">
             </div>
           </div>
-
+            -->
           <!-- Hóspedes -->
+            <!--
           <div class="p-2 sm:p-3">
             <p class="mb-2 text-[#F46E00] font-bold text-sm sm:text-base">Hóspedes</p>
             <div class="relative">
@@ -95,8 +100,9 @@
               </select>
             </div>
           </div>
-
+-->
           <!-- Botão buscar -->
+            <!--
           <div class="p-2 sm:p-3 xl:p-0">
             <a href="#" class="block search-btn" aria-label="Buscar">
               <img
@@ -106,32 +112,22 @@
               >
             </a>
           </div>
+            -->
         </div>
       </div>
 
     </div>
   </div>
 </section>
-@if(auth()->check())
-    {{-- Container onde os resultados serão injetados --}}
-    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 py-8">
-        <div id="search-status" class="loader" aria-live="polite">
-            <div class="spinner" aria-hidden="true"></div>
-            <span>Carregando resultados…</span>
-        </div>
-        <div id="search-results-container"></div>
-        <div id="search-error" class="error-box mt-3" style="display:none;"></div>
-    </div>
-@endif
 <!-- ================= O QUE É O CLUBE + ================= -->
 <section>
   <div
-    class="bg-center bg-no-repeat bg-cover max-h-[100vh] pt-10"
-    style="background-image:url('{{asset('images/banner-oq-é 1.png')}}');">
+    class="w-full max-w-[1920px] relative max-h-[905px] h-screen mx-auto bg-cover bg-center"
+    style="background-image:url('{{asset('images/oque-e-1920.png')}}');">
 
-    <div class="ml-4 sm:ml-8 md:ml-12 relative w-[320px] sm:w-[420px] md:w-[500px] h-[360px] sm:h-[440px] md:h-[500px] bg-no-repeat bg-contain"
+    <div class="ml-4 sm:ml-8 md:ml-12 relative w-[320px] sm:w-[420px] pt-2 md:w-[500px] h-[360px] sm:h-[440px] md:h-[500px] bg-no-repeat bg-contain"
          style="background-image:url('{{asset('images/oque-e.png')}}'); ">
-      <div class="absolute top-5 right-0">
+      <div class="absolute top-0 right-0">
         <svg width="72" height="83" viewBox="0 0 72 83" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 59.2768C0 72.1619 9.72216 82.6044 21.7099 82.6044H71.7645C71.7494 82.2034 71.708 81.8064 71.708 81.4013V0H0v59.2768Zm38.5343-42.2277c2.3938 0 4.3389 2.0902 4.3389 4.6704v12.0749h11.2452c2.3937 0 4.3389 2.0982 4.3389 4.6704v5.683c0 2.5802-1.9452 4.6703-4.3389 4.6703H42.8732V60.893c0 2.5803-1.9451 4.6704-4.3389 4.6704h-5.2965c-2.3938 0-4.3465-2.1897-4.3465-4.7701V48.8181H17.6537c-2.3938 0-4.3465-2.0901-4.3465-4.6703v-5.683c0-2.5722 1.9527-4.6704 4.3465-4.6704h11.2376V21.7195c0-2.5802 2.006-4.6704 4.3998-4.6704h5.2432Z" fill="white"/></svg>
       </div>
       <div class="pt-[clamp(10px,3.472vw,50px)] pl-[clamp(10px,2.083vw,30px)]">
@@ -145,12 +141,12 @@
       </div>
     </div>
 
-    <div class="max-w-[1280px] mx-auto mt-[60px] sm:mt-8 px-4 sm:px-6">
+    <div class="absolute bottom-[10px] xl:bottom-[30px] left-1/2 -translate-x-1/2 max-w-[1280px] w-full px-4 sm:px-6">
       <div class="max-w-[680px]">
-        <h2 class="text-[22px] sm:text-[34px] md:text-[40px] leading-tight font-bold">
+        <h2 class="text-[22px] xl:text-[clamp(10px,1.979vw,40px)] sm:text-[34px] md:text-[38px] leading-tight font-bold">
           Sua próxima viagem começa com vantagens!
         </h2>
-        <p class="font-light opacity-50 mt-2 text-[14px] sm:text-[15px]">
+        <p class="font-light opacity-50 mt-2 text-[14px] xl:text-[18px] sm:text-[15px]">
           Optaquae perepedi dende officae cabore, niandi opti ut lam de cumque nimo ommolum qui auda sundi num quisque proresequis modic to berrovidem. Musam aliquo optae que nonecul.
         </p>
       </div>
@@ -160,7 +156,7 @@
 
 <!-- ================= DESTINOS ================= -->
 <section>
-  <div class="max-w-[1920px] bg-[#E1E1E1] pt-6 md:pt-10 min-h-[clamp(620px,100vh,1080px)] mx-auto">
+  <div class="max-w-[1920px] bg-[#E1E1E1] pt-6 md:pt-10 min-h-[clamp(620px,100vh,762px)] mx-auto">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6">
       <h2 class="text-[#F46E00] text-[30px] sm:text-[42px] md:text-[54px] leading-tight max-w-[680px]">
         Seu próximo destino com desconto
@@ -168,7 +164,7 @@
 
       <div class="destination-content mt-4 md:mt-6 flex justify-between md:justify-between">
         <div class="destination-block active bg-center bg-cover bg-no-repeat"
-             style="background-image:url('{{asset("images/wanderlust.png")}}')">
+             style="background-image:url('{{asset("images/Wanderslust-500x500.png")}}')">
           <div class="destination-description">
             <h3 class="destination-text-title">Wanderlust Experience Hotel</h3>
             <p class="destination-text-description">
@@ -186,7 +182,7 @@
         </div>
 
         <div class="destination-block bg-center bg-cover bg-no-repeat"
-             style="background-image:url('{{asset("images/bravamundo.png")}}')">
+             style="background-image:url('{{asset("images/Brava-Mundo-500x500.png")}}')">
           <div class="destination-description">
             <h3 class="destination-text-title">Brava Mundo</h3>
             <p class="destination-text-description">Lorem Ipsum lorem ipsum lorem.</p>
@@ -200,7 +196,7 @@
         </div>
 
         <div class="destination-block bg-center bg-cover bg-no-repeat"
-             style="background-image:url('{{asset("images/poehma.png")}}')">
+             style="background-image:url('{{asset("images/Poehma-500x500.png")}}')">
           <div class="destination-description">
             <h3 class="destination-text-title">Poehma</h3>
             <p class="destination-text-description">Lorem Ipsum lorem ipsum lorem.</p>
@@ -214,7 +210,7 @@
         </div>
 
         <div class="destination-block bg-center bg-cover bg-no-repeat"
-             style="background-image:url('{{asset("images/poehma.png")}}')">
+             style="background-image:url('{{asset("images/Vivant-500x500.png")}}')">
           <div class="destination-description">
             <h3 class="destination-text-title">Vivant Eco Beach</h3>
             <p class="destination-text-description">Lorem Ipsum lorem ipsum lorem.</p>
@@ -291,40 +287,6 @@
   </div>
 </section>
 
-<!-- Elementor widget (inalterado) -->
-<section style="display: none;" class="otabuilder-area py-6 sm:py-8">
-  <div class="container max-w-[1280px] mx-auto px-4 sm:px-6 md:px-8">
-    <div data-elementor-type="wp-page" data-elementor-id="1056" class="elementor elementor-1056" data-elementor-post-type="page">
-      <div class="elementor-element elementor-element-84543a9 e-flex e-con-boxed e-con e-parent" data-id="84543a9" data-element_type="container" data-settings='{"background_background":"classic","_ha_eqh_enable":false}' data-core-v316-plus="true">
-        <div class="e-con-inner">
-          <div class="elementor-element elementor-element-6da6e43 e-flex e-con-boxed e-con e-child" data-id="6da6e43" data-element_type="container" data-settings='{"background_background":"classic","_ha_eqh_enable":false}'>
-            <div class="e-con-inner">
-              <div class="elementor-element elementor-element-1e17443 elementor-widget elementor-widget-html" data-id="1e17443" data-element_type="widget" data-widget_type="html.default">
-                <div class="elementor-widget-container">
-                  <div id="otabuilder-widget">Carregando...</div>
-                  <script>
-                    function loadJS(url, location){var s=document.createElement('script');s.src=url;s.crossOrigin='anonymous';s.defer=true;s.async=true;location.appendChild(s);}
-                    function initOtabuilderWidget(storefrontId,getCredentials,elementId,orientation){
-                      var k='_OTABUILDER_EMBEDDED_SEARCH_INIT',loaded=false;
-                      var _i=function(initSearchForm){
-                        if(!loaded){loaded=true;initSearchForm(document.getElementById(elementId),{storefrontId,getCredentials,orientation});}
-                      }
-                      if(window[k]){_i(window[k]);}
-                      else{document.addEventListener('otabuilder-search-ready',function(e){_i(e.detail.initSearchForm);});}
-                    }
-                    initOtabuilderWidget('xcGENFcrc44OoqI8awMuE',undefined,'otabuilder-widget','HORIZONTAL');
-                    loadJS('https://app.otabuilder.com/static/js/widget.js',document.body);
-                  </script>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
 
 <svg width="0" height="0">
   <defs>
@@ -333,6 +295,50 @@
     </clipPath>
   </defs>
 </svg>
+
+<script>
+    function loadJS(url, location) {
+        var scriptTag = document.createElement('script')
+        scriptTag.src = url
+        scriptTag.crossOrigin = 'anonymous'
+        scriptTag.defer = true
+        scriptTag.async = true
+        location.appendChild(scriptTag)
+    }
+    function initOtabuilderWidget(storefrontId, elementId, orientation) {
+        var k = '_OTABUILDER_EMBEDDED_SEARCH_INIT'
+        var loaded = false
+        var _i = function (initSearchForm) {
+            if (!loaded) {
+                loaded = true
+                initSearchForm(document.getElementById(elementId), {
+                    storefrontId: storefrontId,
+                    orientation: orientation,
+                })
+
+                console.log('Widget inicializado:', elementId)
+            }
+        }
+        // CORREÇÃO AQUI: Use 'k' em vez de '_k'
+        if (window[k]) {
+            _i(window[k])
+        } else {
+            const listener = function (e) {
+                _i(e.detail.initSearchForm)
+            }
+            document.addEventListener('otabuilder-search-ready', listener)
+        }
+    }
+    initOtabuilderWidget(
+        'DMfMlkDfi5acPpHsWT4r3' /** storefrontId */,
+        'otabuilder-widget' /** widget container */,
+        'HORIZONTAL' /* orientation */
+    )
+    loadJS(
+        'https://app.otabuilder.com/static/js/widget.js' /** widget Js Url */,
+        document.body /** script tag parent */
+    )
+</script>
 
 @include('components.footer')
 
