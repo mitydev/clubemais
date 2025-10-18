@@ -4,15 +4,19 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocalController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PagesController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/dashboard', function () {
     if(auth()->user()->hasRole("admin")){
-        return view('dashboard');
+        return view('admin.painel');
     }
     return response()->redirectToRoute('home');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+
+Route::get('/dashboard/pages', [PagesController::class, 'index'])->name('pages.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
