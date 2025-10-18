@@ -8,15 +8,19 @@ use App\Http\Controllers\PagesController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/dashboard', function () {
-    if(auth()->user()->hasRole("admin")){
-        return view('admin.painel');
-    }
-    return response()->redirectToRoute('home');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 
-Route::get('/dashboard/pages', [PagesController::class, 'index'])->name('pages.index');
+Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function (){
+    Route::get('/', function () {
+        if(auth()->user()->hasRole("admin")){
+            return view('admin.painel');
+        }
+        return response()->redirectToRoute('home');
+    })->middleware(['auth', 'verified'])->name('dashboard');
+
+    Route::resource('/pages', PagesController::class);
+    Route::get('/banners', [PagesController::class, 'index'])->name('pages.banners');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -22,7 +22,7 @@
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                     <img
-                        src="./assets/img/user2-160x160.jpg"
+                        src="{{asset('assets/img/user2-160x160.jpg')}}"
                         class="user-image rounded-circle shadow"
                         alt="User Image"
                     />
@@ -32,7 +32,7 @@
                     <!--begin::User Image-->
                     <li class="user-header text-bg-primary">
                         <img
-                            src="./assets/img/user2-160x160.jpg"
+                            src="{{asset('assets/img/user2-160x160.jpg')}}"
                             class="rounded-circle shadow"
                             alt="User Image"
                         />
@@ -104,19 +104,19 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="./index.html" class="nav-link active">
+                            <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard')?'active':'' }}">
                                 <i class="nav-icon bi bi-gear"></i>
                                 <p>Dashboard</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('pages.index') }}" class="nav-link">
+                            <a href="{{ route('pages.index') }}" class="nav-link {{ request()->routeIs(['pages.index', 'pages.edit'])?'active':'' }}">
                                 <i class="nav-icon bi bi-pen"></i>
                                 <p>Paginas</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="./index.html" class="nav-link">
+                            <a href="{{ route('pages.banners') }}" class="nav-link {{ request()->routeIs('pages.banners')?'active':'' }}">
                                 <i class="nav-icon bi bi-image"></i>
                                 <p>Banners</p>
                             </a>
