@@ -116,7 +116,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('pages.banners') }}" class="nav-link {{ request()->routeIs('pages.banners')?'active':'' }}">
+                            <a href="{{ route('banners.index') }}" class="nav-link {{ request()->routeIs(['banners.index', 'banners.edit'])?'active':'' }}">
                                 <i class="nav-icon bi bi-image"></i>
                                 <p>Banners</p>
                             </a>

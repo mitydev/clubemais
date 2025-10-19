@@ -47,7 +47,7 @@
                                 {{ session('success') }}
                             </div>
                             @endif
-                            <form class="row" action=""
+                            <form class="row" action="{{route('pages.update', $page->id)}}"
                                   method="POST">
                                 @csrf
                                 @if(isset($page))

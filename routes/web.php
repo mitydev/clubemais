@@ -5,6 +5,7 @@ use App\Http\Controllers\LocalController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\BannersController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -19,7 +20,7 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function (){
     })->middleware(['auth', 'verified'])->name('dashboard');
 
     Route::resource('/pages', PagesController::class);
-    Route::get('/banners', [PagesController::class, 'index'])->name('pages.banners');
+    Route::resource('/banners', BannersController::class);
 });
 
 Route::middleware('auth')->group(function () {
