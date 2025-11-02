@@ -1,124 +1,91 @@
 <!doctype html>
 <html lang="pt-BR">
-<!--begin::Head-->
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Clube Mais - Dashboard</title>
-    <!--begin::Accessibility Meta Tags-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#007bff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
-    <!--end::Accessibility Meta Tags-->
-    <!--begin::Primary Meta Tags-->
-    <meta name="title" content="AdminLTE v4 | Dashboard" />
-    <link rel="icon" type="image/png" href="{{ asset('images/plus.png') }}">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clube Mais - Dashboard</title>
+  <link rel="icon" type="image/png" href="{{ asset('images/plus.png') }}">
 
-    <meta name="author" content="ColorlibHQ" />
-    <meta
-        name="description"
-        content="AdminLTE is a Free Bootstrap 5 Admin Dashboard, 30 example pages using Vanilla JS. Fully accessible with WCAG 2.1 AA compliance."
-    />
-    <meta
-        name="keywords"
-        content="bootstrap 5, bootstrap, bootstrap 5 admin dashboard, bootstrap 5 dashboard, bootstrap 5 charts, bootstrap 5 calendar, bootstrap 5 datepicker, bootstrap 5 tables, bootstrap 5 datatable, vanilla js datatable, colorlibhq, colorlibhq dashboard, colorlibhq admin dashboard, accessible admin panel, WCAG compliant"
-    />
-    <!--end::Primary Meta Tags-->
-    <!--begin::Accessibility Features-->
-    <!-- Skip links will be dynamically added by accessibility.js -->
-    <meta name="supported-color-schemes" content="light dark" />
-    <link rel="preload" href="{{asset('css/adminlte.css')}}" as="style" />
-    <!--end::Accessibility Features-->
-    <!--begin::Fonts-->
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css"
-        integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q="
-        crossorigin="anonymous"
-        media="print"
-        onload="this.media='all'"
-    />
-    <!--end::Fonts-->
-    <!--begin::Third Party Plugin(OverlayScrollbars)-->
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css"
-        crossorigin="anonymous"
-    />
-    <!--end::Third Party Plugin(OverlayScrollbars)-->
-    <!--begin::Third Party Plugin(Bootstrap Icons)-->
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
-        crossorigin="anonymous"
-    />
-    <!--end::Third Party Plugin(Bootstrap Icons)-->
-    <!--begin::Required Plugin(AdminLTE)-->
-    <link rel="stylesheet" href="{{asset('css/adminlte.css')}}" />
-    <!--end::Required Plugin(AdminLTE)-->
-    <!-- apexcharts -->
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css"
-        integrity="sha256-4MX+61mt9NVvvuPjUWdUdyfZfxSB1/Rf9WtqRHgG5S0="
-        crossorigin="anonymous"
-    />
-    <!-- jsvectormap -->
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css"
-        integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4="
-        crossorigin="anonymous"
-    />
+  {{-- Fonts / CSS de terceiros --}}
+  <link rel="preload" href="{{ asset('css/adminlte.css') }}" as="style" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css"
+        integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q=" crossorigin="anonymous"
+        media="print" onload="this.media='all'"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+  {{-- AdminLTE CSS --}}
+  <link rel="stylesheet" href="{{ asset('css/adminlte.css') }}"/>
+
+  <style>
+    /* refinamentos do submenu da sidebar */
+    .sidebar-menu .nav-treeview{ --submenu-indent:1.25rem; position:relative; margin-left:.25rem; }
+    .sidebar-menu .nav-treeview::before{ content:""; position:absolute; left:.25rem; top:.25rem; bottom:.25rem;
+      border-left:1px dashed var(--bs-border-color); opacity:.6; }
+    .sidebar-menu .nav-treeview > .nav-item > .nav-link{ padding-left:calc(1rem + var(--submenu-indent)); border-radius:.375rem; }
+    .sidebar-menu .nav-treeview > .nav-item > .nav-link .nav-icon{ font-size:.9rem; margin-right:.35rem; opacity:.85; }
+    .sidebar-menu .nav-item.menu-open > .nav-link{ background-color:var(--bs-gray-200); }
+    .sidebar-menu .nav-treeview > .nav-item > .nav-link.active{ background-color:var(--bs-primary-bg-subtle); color:var(--bs-primary); }
+  </style>
 </head>
-<!--end::Head-->
-<!--begin::Body-->
+
 <body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary">
 <div class="app-wrapper">
-    @include('partials.header')
-    @yield('content')
-    @include('partials.footer')
+
+  {{-- Navbar/Header do topo --}}
+  @include('partials.header')
+
+  {{-- Sidebar fixa (precisa do wrapper) --}}
+  <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+    <div class="sidebar-wrapper">
+      @include('partials.sidebar')
+    </div>
+  </aside>
+
+  {{-- Conteúdo principal --}}
+  <main class="app-main">
+    {{-- Cabeçalho da página opcional (breadcrumbs) --}}
+    <div class="app-content-header">
+      <div class="container-fluid">
+        {{-- Você pode colocar breadcrumbs aqui, se quiser --}}
+      </div>
+    </div>
+
+    {{-- Área de conteúdo --}}
+    <div class="app-content">
+      <div class="container-fluid">
+        @yield('content')
+      </div>
+    </div>
+  </main>
+
+  {{-- Rodapé do AdminLTE (não o footer do site público) --}}
+  @include('partials.footer')
+
 </div>
-<script
-    src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"
-    crossorigin="anonymous"
-></script>
-<!--end::Third Party Plugin(OverlayScrollbars)--><!--begin::Required Plugin(popperjs for Bootstrap 5)-->
-<script
-    src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-    crossorigin="anonymous"
-></script>
-<!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
-<script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"
-    crossorigin="anonymous"
-></script>
-<!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
-<script src="{{asset('js/adminlte.js')}}"></script>
-<!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
+
+{{-- JS de terceiros --}}
+<script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"></script>
+
+{{-- AdminLTE JS --}}
+<script src="{{ asset('js/adminlte.js') }}"></script>
+
+{{-- Inicialização do OverlayScrollbars na sidebar --}}
 <script>
-    const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
-    const Default = {
-        scrollbarTheme: 'os-theme-light',
-        scrollbarAutoHide: 'leave',
-        scrollbarClickScroll: true,
-    };
-    document.addEventListener('DOMContentLoaded', function () {
-        const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
-        if (sidebarWrapper && OverlayScrollbarsGlobal?.OverlayScrollbars !== undefined) {
-            OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
-                scrollbars: {
-                    theme: Default.scrollbarTheme,
-                    autoHide: Default.scrollbarAutoHide,
-                    clickScroll: Default.scrollbarClickScroll,
-                },
-            });
-        }
-    });
+  const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
+  document.addEventListener('DOMContentLoaded', function () {
+    const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
+    if (sidebarWrapper && window.OverlayScrollbarsGlobal?.OverlayScrollbars) {
+      OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
+        scrollbars: { theme: 'os-theme-light', autoHide: 'leave', clickScroll: true }
+      });
+    }
+  });
 </script>
 
-
-<!--end::Script-->
+{{-- Ponto de injeção de scripts das páginas (ex.: settings/footer) --}}
+@stack('lte-scripts')
 </body>
-<!--end::Body-->
 </html>

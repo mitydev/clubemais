@@ -12,11 +12,11 @@
       <!-- NAV DESKTOP (só >= 1024px) -->
       <nav class="hidden lg:flex items-center gap-6 xl:gap-8 2xl:gap-10 menu-content text-[15px] xl:text-base whitespace-nowrap">
         <a href="{{ route('o-que-e') }}" class="hover:text-black/80">O que é</a>
-        <a href="#" class="hover:text-black/80">Hotéis & Resorts</a>
+        <!-- <a href="#" class="hover:text-black/80">Hotéis & Resorts</a> -->
         <a href="{{ route('beneficios') }}" class="hover:text-black/80">Benefícios</a>
         <a href="{{ route('parceiros') }}" class="hover:text-black/80">Parceiros</a>
-        <a href="#" class="hover:text-black/80">FAQ</a>
-        <a href="#" class="hover:text-black/80">Contato</a>
+        <!-- <a href="#" class="hover:text-black/80">FAQ</a> -->
+        <!-- <a href="#" class="hover:text-black/80">Contato</a> -->
       </nav>
 
       <!-- AÇÕES DESKTOP (só >= 1024px) -->
@@ -71,11 +71,11 @@
       <nav class="p-4 space-y-5 text-lg">
         <a href="/" class="block">Home</a>
         <a href="{{ route('o-que-e') }}" class="block">O que é</a>
-        <a href="#" class="block">Hotéis & Resorts</a>
+        <!-- <a href="#" class="block">Hotéis & Resorts</a> -->
         <a href="{{ route('beneficios') }}" class="block">Benefícios</a>
         <a href="{{ route('parceiros') }}" class="block">Parceiros</a>
-        <a href="#" class="block">FAQ</a>
-        <a href="#" class="block">Contato</a>
+        <!-- <a href="#" class="block">FAQ</a> -->
+        <!-- <a href="#" class="block">Contato</a> -->
       </nav>
 
       <div class="mt-auto p-4 border-t">

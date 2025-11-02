@@ -1,15 +1,22 @@
 <?php
 
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocalController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\BannersController;
+use App\Http\Controllers\BeneficiosController;
+use App\Http\Controllers\DestinationController;
+use App\Http\Controllers\FooterSettingsController;
+use App\Http\Controllers\OqueEController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\PageSectionController;
+use App\Http\Controllers\PageShowController;
+use App\Http\Controllers\ParceirosController;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-
-
+Route::get('/', [HomeController::class, 'home'])->name('home');
 
 Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function (){
     Route::get('/', function () {
@@ -19,8 +26,30 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function (){
         return response()->redirectToRoute('home');
     })->middleware(['auth', 'verified'])->name('dashboard');
 
-    Route::resource('/pages', PagesController::class);
-    Route::resource('/banners', BannersController::class);
+    Route::resource('pages', PageController::class);              
+    Route::resource('pages.sections', PageSectionController::class);
+    Route::get ('banners/groups',                 [BannerController::class, 'groupsIndex'])->name('banners.groups');
+    Route::get ('banners/groups/{group}',         [BannerController::class, 'groupsEdit'])->name('banners.groups.edit');
+    Route::post('banners/groups/{group}/bulk',    [BannerController::class, 'groupsBulk'])->name('banners.groups.bulk');
+    Route::post('banners/groups/{group}/upload',  [BannerController::class, 'groupsUpload'])->name('banners.groups.upload');     
+    Route::resource('banners', BannerController::class);
+
+
+    Route::post   ('pages/{page}/sections',                [PageSectionController::class, 'store' ])->name('page_sections.store');
+    Route::put    ('pages/{page}/sections/{section}',      [PageSectionController::class, 'update'])->name('page_sections.update');
+    Route::delete ('pages/{page}/sections/{section}',      [PageSectionController::class, 'destroy'])->name('page_sections.destroy');
+
+    
+    Route::get ('destinos/groups',                 [DestinationController::class, 'groupsIndex'])->name('destinos.groups');
+    Route::get ('destinos/groups/{group}',         [DestinationController::class, 'groupsEdit'])->name('destinos.groups.edit');
+    Route::post('destinos/groups/{group}/bulk',    [DestinationController::class, 'groupsBulk'])->name('destinos.groups.bulk');
+    Route::post('destinos/groups/{group}/upload',  [DestinationController::class, 'groupsUpload'])->name('destinos.groups.upload');
+
+    Route::resource('destinos', DestinationController::class);
+
+    Route::get('/settings/footer', [FooterSettingsController::class, 'edit'])->name('admin.footer.edit');
+    Route::put('/settings/footer', [FooterSettingsController::class, 'update'])->name('admin.footer.update');
+    
 });
 
 Route::middleware('auth')->group(function () {
@@ -29,35 +58,34 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/o-que-e', function () {
-    $heroTitle = 'O programa';
 
-    // Cole aqui o SEU texto grandão
-    $heroText = <<<TXT
-    Optaquae perepedi dende officae cabore, niandi opti ut lam de cumque nimo ommolum qui auda sundi num quisque proresequis modic to berrovidem. Musam aliquo optae que nonecul luptionempos a nossi sum autaers pictori buscium laborest, ut volorenim illuptu repudaeris repernatur sum coratem porrum quam nisquat urestrunt et verepe quaessint occatis ma cuOptaquae perepedi dende officae cabore, niandi opti ut lam de cumque nimo ommolum qui auda sundi num quisque proresequis modic to berrovidem. Musam aliquo optae que nonecul luptionempos a nossi sum autaers pictori buscium laborest, ut volorenim illuptu repudaeris repernatur sum coratem porrum quam nisquat urestrunt et verepe quaessint occatis ma casert. Optaquae perepedi dende officae cabore, niandi opti ut lam de cumque nimo ommolum qui auda sundi num quisque proresequis modic to berrovidem. Musam aliquo optae .
-    TXT;
+Route::get('/o-que-e', [OqueEController::class, 'OqueE'])->name('o-que-e');
 
-    return view('o-que-e', compact('heroTitle','heroText'));
-})->name("o-que-e");
+Route::get('/beneficios', [BeneficiosController::class, 'show'])->name('beneficios');
 
-Route::get('/beneficios', function () {
-    return view('beneficios');
-})->name("beneficios");
+// Route::get('/beneficios', function () {
+//     return view('beneficios');
+// })->name("beneficios");
 
-Route::get('/parceiros', function () {
-    return view('parceiros');
-})->name('parceiros');
+Route::get('/parceiros', [ParceirosController::class, 'show'])->name('parceiros');
 
-// Ajax: ID -> slug de Term
+// Route::get('/parceiros', function () {
+//     return view('parceiros');
+// })->name('parceiros');
+
 Route::post('/ajax/get-taxonomy-slug', [LocalController::class, 'slugById'])
     ->name('ajax.taxonomy.slug');
 
-// LISTAGEM por TERMO (é essa rota que seu JS carrega no #search-results-container)
+
 Route::get('/local/{term:slug}', [LocalController::class, 'byTerm'])
     ->name('local.byTerm');
 
-// DETALHE de um hotel/local (opcional)
+
 Route::get('/hotel/{local:slug}', [LocalController::class, 'show'])
     ->name('hotel.show');
+
+Route::get('{slug}', PageShowController::class)
+  ->where('slug', '^(?!admin|dashboard|login|logout|register|password.*|api/.*).*$')
+  ->name('site.page');
 
 require __DIR__.'/auth.php';
