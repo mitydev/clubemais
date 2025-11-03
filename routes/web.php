@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\KeycloakController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocalController;
@@ -26,12 +27,12 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function (){
         return response()->redirectToRoute('home');
     })->middleware(['auth', 'verified'])->name('dashboard');
 
-    Route::resource('pages', PageController::class);              
+    Route::resource('pages', PageController::class);
     Route::resource('pages.sections', PageSectionController::class);
     Route::get ('banners/groups',                 [BannerController::class, 'groupsIndex'])->name('banners.groups');
     Route::get ('banners/groups/{group}',         [BannerController::class, 'groupsEdit'])->name('banners.groups.edit');
     Route::post('banners/groups/{group}/bulk',    [BannerController::class, 'groupsBulk'])->name('banners.groups.bulk');
-    Route::post('banners/groups/{group}/upload',  [BannerController::class, 'groupsUpload'])->name('banners.groups.upload');     
+    Route::post('banners/groups/{group}/upload',  [BannerController::class, 'groupsUpload'])->name('banners.groups.upload');
     Route::resource('banners', BannerController::class);
 
 
@@ -39,7 +40,7 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function (){
     Route::put    ('pages/{page}/sections/{section}',      [PageSectionController::class, 'update'])->name('page_sections.update');
     Route::delete ('pages/{page}/sections/{section}',      [PageSectionController::class, 'destroy'])->name('page_sections.destroy');
 
-    
+
     Route::get ('destinos/groups',                 [DestinationController::class, 'groupsIndex'])->name('destinos.groups');
     Route::get ('destinos/groups/{group}',         [DestinationController::class, 'groupsEdit'])->name('destinos.groups.edit');
     Route::post('destinos/groups/{group}/bulk',    [DestinationController::class, 'groupsBulk'])->name('destinos.groups.bulk');
@@ -49,8 +50,14 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function (){
 
     Route::get('/settings/footer', [FooterSettingsController::class, 'edit'])->name('admin.footer.edit');
     Route::put('/settings/footer', [FooterSettingsController::class, 'update'])->name('admin.footer.update');
-    
+
 });
+
+// Rota de Início do SSO
+Route::get('/auth/redirect', [KeycloakController::class, 'redirectToKeycloak'])->name('login.sso');
+
+// Rota de Callback (Retorno do Keycloak)
+Route::get('/auth/keycloak/callback', [KeycloakController::class, 'handleKeycloakCallback']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
