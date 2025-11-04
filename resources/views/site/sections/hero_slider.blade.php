@@ -27,9 +27,9 @@ if ($groupId) {
 }
 
 /** NÃO recalcular $isHome aqui. Use o valor vindo do include.
- *  Fallback apenas se não vier do pai. */
+ * Fallback apenas se não vier do pai. */
 $isHomeLocal = isset($isHome) ? (bool)$isHome : (
-       request()->routeIs('home')
+        request()->routeIs('home')
     || url()->current() === url('/')
     || request()->getPathInfo() === '/'
 );
@@ -37,44 +37,51 @@ $isHomeLocal = isset($isHome) ? (bool)$isHome : (
 
 @if($slides->isNotEmpty())
 <section class="relative w-full"
-         data-hero-slider
-         style="--hero-h: {{ $height }}; min-height: var(--hero-h);">
+           data-hero-slider
+           style="--hero-h: {{ $height }}; min-height: var(--hero-h);">
 
   <div class="relative w-full overflow-hidden"
        style="min-height: var(--hero-h);"
        data-hero-autoplay="{{ $autoplay ? '1' : '0' }}"
        data-hero-delay="{{ $delayMs }}">
 
-    @foreach($slides as $i => $b)
-      @php
-        $img  = !empty($b->image_path) ? Storage::url($b->image_path) : ($b->image_url ?? '');
-        if (!$img) continue;
-        $href = $b->link_url ?? '#';
-        $alt  = $b->alt_text ?? $b->title ?? 'Slide';
-      @endphp
+       @foreach($slides as $i => $b)
+         @php
+           $img  = !empty($b->image_path) ? Storage::url($b->image_path) : ($b->image_url ?? '');
+           if (!$img) continue;
+           $href = $b->link_url ?? '#';
+           $alt  = $b->alt_text ?? $b->title ?? 'Slide';
+         @endphp
 
-      <a data-hero-slide
-         class="block w-full h-full absolute inset-0 transition-opacity duration-700 {{ $i === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0' }}"
-         href="{{ $href }}"
-         style="background-image:url('{{ $img }}'); background-size:cover; background-position:center;">
-        @if($captionShow)<span class="sr-only">{{ $alt }}</span>@endif
-      </a>
-    @endforeach
+         <a data-hero-slide
+           class="block w-full h-full absolute inset-0 transition-opacity duration-700 {{ $i === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0' }}"
+           href="{{ $href }}"
+         >
+           {{-- Usando a tag <img> com object-cover para preservar a proporção --}}
+           <img src="{{ $img }}" alt="{{ $alt }}"
+                class="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
+           />
 
-    <button type="button"
-            class="hero-nav hero-prev absolute left-3 md:left-5 top-1/2 -translate-y-1/2 z-20
-                   w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/70 backdrop-blur
-                   flex items-center justify-center shadow hover:bg-white focus:outline-none"
-            aria-label="Slide anterior">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <button type="button"
-            class="hero-nav hero-next absolute right-3 md:right-5 top-1/2 -translate-y-1/2 z-20
-                   w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/70 backdrop-blur
-                   flex items-center justify-center shadow hover:bg-white focus:outline-none"
-            aria-label="Próximo slide">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
+           @if($captionShow)<span class="sr-only">{{ $alt }}</span>@endif
+         </a>
+       @endforeach
+
+     <button type="button"
+             class="hero-nav hero-prev absolute left-3 md:left-5 top-1/2 -translate-y-1/2 z-20
+                    w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/70 backdrop-blur
+                    flex items-center justify-center shadow hover:bg-white focus:outline-none"
+             aria-label="Slide anterior">
+       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+     </button>
+     <button type="button"
+             class="hero-nav hero-next absolute right-3 md:right-5 top-1/2 -translate-y-1/2 z-20
+                    w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/70 backdrop-blur
+                    flex items-center justify-center shadow hover:bg-white focus:outline-none"
+             aria-label="Próximo slide">
+       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+     </button>
   </div>
 
   <div class="pointer-events-none absolute inset-0 z-10" style="background: {{ $overlay }};"></div>
