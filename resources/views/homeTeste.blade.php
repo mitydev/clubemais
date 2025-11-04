@@ -25,8 +25,8 @@
   @vite(['resources/css/default.css','resources/css/app.css','resources/css/pages/home.css','resources/js/app.js'])
 
   <style>
-    #otabuilder-widget{position:relative;z-index:9999}
-    [data-hero-slider] .pointer-events-none{pointer-events:none!important}
+    #otabuilder-widget{ position:relative; z-index:9999; }
+    [data-hero-slider] .pointer-events-none{ pointer-events:none !important; }
   </style>
 </head>
 <body>
@@ -60,28 +60,69 @@
 
   <script>
     (function(){
-      function loadJS(u, where){
-        var s=document.createElement('script');
-        s.src=u; s.crossOrigin='anonymous'; s.defer=true; s.async=true;
-        where.appendChild(s);
+      var STORE_ID = 'DMfMlkDfi5acPpHsWT4r3';
+      var ELEM_ID  = 'otabuilder-widget';
+      var ORIENT   = 'HORIZONTAL';
+      var KEY      = '_OTABUILDER_EMBEDDED_SEARCH_INIT';
+      var started  = false;
+
+      function log(){ try{ console.log.apply(console, ['[OTA]'].concat([].slice.call(arguments))); }catch(e){} }
+      function err(){ try{ console.error.apply(console, ['[OTA]'].concat([].slice.call(arguments))); }catch(e){} }
+
+      function loadJS(url){
+        return new Promise(function(resolve, reject){
+          var s = document.createElement('script');
+          s.src = url;
+          s.crossOrigin = 'anonymous';
+          s.defer = true;
+          s.async = true;
+          s.onload  = function(){ log('widget.js carregado'); resolve(); };
+          s.onerror = function(){ err('ERRO ao carregar widget.js'); reject(new Error('load error')); };
+          document.body.appendChild(s);
+        });
       }
-      function initOta(storefrontId, elementId, orientation){
-        var K='_OTABUILDER_EMBEDDED_SEARCH_INIT', loaded=false;
-        var boot=function(initFn){
-          if(loaded) return;
-          var el=document.getElementById(elementId);
-          if(!el) return;
-          loaded=true; initFn(el,{storefrontId:storefrontId,orientation:orientation});
-        };
-        if(window[K]) boot(window[K]);
-        else document.addEventListener('otabuilder-search-ready', function(e){ boot(e.detail.initSearchForm); }, { once:true });
+
+      function tryBoot(initFn){
+        if (started) return;
+        var el = document.getElementById(ELEM_ID);
+        if (!el){ log('sem container ainda'); return; }
+        try{
+          initFn(el, { storefrontId: STORE_ID, orientation: ORIENT });
+          started = true;
+          log('init chamado com sucesso');
+        }catch(e){ err('falha no init', e); }
       }
-      document.addEventListener('DOMContentLoaded', function(){
-        initOta('DMfMlkDfi5acPpHsWT4r3','otabuilder-widget','HORIZONTAL');
-        loadJS('https://app.otabuilder.com/static/js/widget.js', document.body);
+
+      // 1) Registrar listener ANTES de carregar o script
+      document.addEventListener('otabuilder-search-ready', function(e){
+        log('evento otabuilder-search-ready recebido');
+        tryBoot(e.detail.initSearchForm);
       });
+
+      // 2) Fallback: polling por 10s caso o evento tenha disparado cedo/demorado
+      var tries = 0, timer = setInterval(function(){
+        tries++;
+        if (window[KEY]){ log('found global init via polling'); tryBoot(window[KEY]); clearInterval(timer); }
+        if (tries > 100){ clearInterval(timer); }
+      }, 100);
+
+      // 3) Injetar o script
+      function start(){
+        // pequeno atraso garante que o container esteja no DOM
+        setTimeout(function(){
+          if (window[KEY]){ log('global init já presente (pré-carregado)'); tryBoot(window[KEY]); }
+          loadJS('https://app.otabuilder.com/static/js/widget.js').catch(function(){});
+        }, 0);
+      }
+
+      if (document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', start, { once:true });
+      }else{
+        start();
+      }
     })();
   </script>
+
 
   @stack('page-scripts')
 </body>
