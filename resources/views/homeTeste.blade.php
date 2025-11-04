@@ -34,7 +34,6 @@
     || request()->getPathInfo() === '/'
     || ($page && trim((string)($page->slug ?? ''), '/') === '');
     $sections = ($page?->sections ?? collect())->sortBy('position')->values();
-    @dd($isHome);
   @endphp
 
   @if($sections->isNotEmpty())
