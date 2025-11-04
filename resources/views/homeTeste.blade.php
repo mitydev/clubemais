@@ -28,9 +28,13 @@
   @include('components.header')
 
   @php
-    // isHome robusto (use route name se tiver, senão path)
-    $isHome   = request()->routeIs('home') || request()->is('/');
+    $isHome =
+        request()->routeIs('home')
+    || url()->current() === url('/')
+    || request()->getPathInfo() === '/'
+    || ($page && trim((string)($page->slug ?? ''), '/') === '');
     $sections = ($page?->sections ?? collect())->sortBy('position')->values();
+
   @endphp
 
   @if($sections->isNotEmpty())
