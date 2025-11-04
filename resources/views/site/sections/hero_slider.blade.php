@@ -80,7 +80,8 @@ $isHomeLocal = isset($isHome) ? (bool)$isHome : (
   <div class="pointer-events-none absolute inset-0 z-10" style="background: {{ $overlay }};"></div>
 
   @if($isHomeLocal)
-    <div class="absolute left-1/2 bottom-6 md:bottom-12 -translate-x-1/2 z-30 w-full max-w-[1204px] px-4 sm:px-6">
+    <div class="absolute left-1/2 bottom-6 md:bottom-12 -translate-x-1/2 w-full max-w-[1204px] px-4 sm:px-6"
+        style="z-index:9999;">
       <div class="bg-white rounded-3xl p-3 sm:p-4 shadow-xl">
         <div id="otabuilder-widget"></div>
       </div>
