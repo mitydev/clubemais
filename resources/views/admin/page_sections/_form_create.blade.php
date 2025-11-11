@@ -39,7 +39,7 @@
 
     <div class="col-md-3">
       <label class="form-label">Posição</label>
-      <input type="number" name="position" class="form-control" value="{{ old('position', 10) }}">
+      <input type="number" name="position" class="form-control" value="{{ old('position', 1) }}">
     </div>
 
     <div class="col-md-3 d-flex align-items-end">

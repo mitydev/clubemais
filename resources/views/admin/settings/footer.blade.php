@@ -128,8 +128,15 @@
     <div class="card-header fw-semibold">Newsletter</div>
     <div class="card-body row g-3">
       <div class="col-12 form-check">
-        <input class="form-check-input" type="checkbox" id="nl_enabled" name="newsletter[enabled]" value="1"
-               @checked(old('newsletter.enabled', data_get($data,'newsletter.enabled', true)))>
+        {{-- garante envio de 0 quando o checkbox estiver desmarcado --}}
+        <input type="hidden" name="newsletter[enabled]" value="0">
+
+        <input class="form-check-input"
+              type="checkbox"
+              id="nl_enabled"
+              name="newsletter[enabled]"
+              value="1"
+              @checked(old('newsletter.enabled', data_get($data,'newsletter.enabled', true)))>
         <label class="form-check-label" for="nl_enabled">Exibir card de cadastro</label>
       </div>
       <div class="col-md-4"><input class="form-control" name="newsletter[title]"        value="{{ old('newsletter.title', data_get($data,'newsletter.title')) }}"        placeholder="Título"></div>

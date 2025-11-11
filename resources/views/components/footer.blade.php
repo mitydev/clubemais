@@ -17,8 +17,14 @@
   $phone     = data_get($cfg, 'phone');
   $social    = collect(data_get($cfg, 'social', []))->filter(fn($r)=>!empty($r['url']))->values();
   $links     = collect(data_get($cfg, 'quick_links', []))->filter(fn($r)=>!empty($r['href']) && !empty($r['label']))->values();
-  $nl        = data_get($cfg, 'newsletter', []);
-  $nlEnabled = (bool) data_get($nl, 'enabled', true);
+  $nl  = (array) data_get($cfg, 'newsletter', []);
+
+  // enabled: respeita false salvo e faz cast robusto
+  if (array_key_exists('enabled', $nl)) {
+      $nlEnabled = in_array($nl['enabled'], [true, 1, '1', 'true', 'on'], true);
+  } else {
+      $nlEnabled = true; // padrão quando não configurado
+  }
 
   // logo com domínio atual
   $logoUrl = $toUrl($logoPath) ?? asset('images/Logotipov2.svg');
@@ -101,7 +107,6 @@
           </ul>
         @endif
       </div>
-
       {{-- Coluna 3 – Card de newsletter --}}
       <div class="lg:col-span-4">
         @if($nlEnabled)

@@ -1,33 +1,44 @@
+{{-- resources/views/site/sections/hero_slider.blade.php --}}
 @php
-  use App\Models\Banner;
-  use Illuminate\Support\Facades\Storage;
+use App\Models\Banner;
+use Illuminate\Support\Facades\Storage;
 
-  $d = config('pagebuilder.sections.hero_slider.defaults');
-  $c = array_merge($d, (array) ($section->content ?? []));
-  $meta = (array) ($section->meta ?? []);
+$d     = config('pagebuilder.sections.hero_slider.defaults');
+$c     = array_merge($d, (array) ($section->content ?? []));
+$meta  = (array) ($section->meta ?? []);
 
-  $height      = $c['height'] ?? '90vh';
-  $overlay     = $c['overlay'] ?? 'rgba(0,0,0,.25)';
-  $autoplay    = (bool) ($c['autoplay'] ?? true);
-  $delayMs     = (int)  ($c['delay_ms'] ?? 4000);
-  $captionShow = (bool) ($c['caption_show'] ?? $d['caption_show']);
+$height      = $c['height'] ?? '90vh';
+$overlay     = $c['overlay'] ?? 'rgba(0,0,0,.25)';
+$autoplay    = (bool) ($c['autoplay'] ?? true);
+$delayMs     = (int)  ($c['delay_ms'] ?? 4000);
+$captionShow = (bool) ($c['caption_show'] ?? $d['caption_show']);
 
-  $groupId = $meta['banner_group_id'] ?? null;
+$groupId = $meta['banner_group_id'] ?? null;
 
-  // ➜ Se houver group, SEMPRE busca do grupo (dinâmico). Caso contrário, usa a pivot.
-  if ($groupId) {
-      $slides = Banner::query()
-          ->where('group_banner_id', $groupId)
-          ->where('is_active', true)
-          ->where(fn($w) => $w->whereNull('starts_at')->orWhere('starts_at','<=',now()))
-          ->where(fn($w) => $w->whereNull('ends_at')->orWhere('ends_at','>=',now()))
-          ->orderBy('position') // ou a coluna que você usa
-          ->get();
-  } else {
-      $slides = collect($section?->banners ?? []);
-  }
+if ($groupId) {
+  $slides = Banner::query()
+      ->where('group_banner_id', $groupId)
+      ->where('is_active', true)
+      ->where(fn($w) => $w->whereNull('starts_at')->orWhere('starts_at','<=',now()))
+      ->where(fn($w) => $w->whereNull('ends_at')->orWhere('ends_at','>=',now()))
+      ->orderBy('position')
+      ->get();
+} else {
+  $slides = collect($section?->banners ?? []);
+}
+
+/** NÃO recalcular $isHome aqui. Use o valor vindo do include.
+ *  Fallback apenas se não vier do pai. */
+$isHomeLocal = isset($isHome) ? (bool)$isHome : (
+       request()->routeIs('home')
+    || url()->current() === url('/')
+    || request()->getPathInfo() === '/'
+);
+
+/** NOVO: defaults de posicionamento/fit do background (podem ser sobrescritos por banner) */
+$bgFitDefault      = 'cover';        // cover | contain
+$bgPositionDefault = 'center';       // ex.: 'left center', 'center top'
 @endphp
-
 
 @if($slides->isNotEmpty())
 <section class="relative w-full"
@@ -43,20 +54,28 @@
       @php
         $img  = !empty($b->image_path) ? Storage::url($b->image_path) : ($b->image_url ?? '');
         if (!$img) continue;
+
         $href = $b->link_url ?? '#';
         $alt  = $b->alt_text ?? $b->title ?? 'Slide';
+
+        // Campos opcionais por banner: bg_fit ('cover'/'contain') e bg_position ('left center', etc.)
+        $bgFit      = trim($b->bg_fit ?? $bgFitDefault);
+        $bgPosition = trim($b->bg_position ?? $bgPositionDefault);
       @endphp
 
       <a data-hero-slide
-         class="block w-full h-full absolute inset-0 transition-opacity duration-700
-                {{ $i === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0' }}"
+         class="block w-full h-full absolute inset-0 transition-opacity duration-700 {{ $i === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0' }}"
          href="{{ $href }}"
-         style="background-image:url('{{ $img }}'); background-size:cover; background-position:center;">
+         style="
+           background-image:url('{{ $img }}');
+           background-size: {{ $bgFit }};
+           background-position: {{ $bgPosition }};
+           background-repeat: no-repeat;
+         ">
         @if($captionShow)<span class="sr-only">{{ $alt }}</span>@endif
       </a>
     @endforeach
 
-    {{-- Navegação --}}
     <button type="button"
             class="hero-nav hero-prev absolute left-3 md:left-5 top-1/2 -translate-y-1/2 z-20
                    w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/70 backdrop-blur
@@ -75,9 +94,9 @@
 
   <div class="pointer-events-none absolute inset-0 z-10" style="background: {{ $overlay }};"></div>
 
-  @php $isHome = request()->routeIs('home') || request()->is('/'); @endphp
-  @if($isHome)
-    <div class="absolute left-1/2 bottom-6 md:bottom-12 -translate-x-1/2 z-30 w-full max-w-[1204px] px-4 sm:px-6">
+  @if($isHomeLocal)
+    <div class="absolute left-1/2 bottom-6 md:bottom-12 -translate-x-1/2 w-full max-w-[1204px] px-4 sm:px-6"
+        style="z-index:9999;">
       <div class="bg-white rounded-3xl p-3 sm:p-4 shadow-xl">
         <div id="otabuilder-widget"></div>
       </div>
@@ -88,7 +107,6 @@
 <script>
 (function () {
   'use strict';
-
   function bootAll(){ document.querySelectorAll('section[data-hero-slider]').forEach(initSlider); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootAll, {once:true}); else bootAll();
 
