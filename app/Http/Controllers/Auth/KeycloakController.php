@@ -52,10 +52,37 @@ class KeycloakController extends Controller
                     'password' => null,
                     // Adicione o role padrão do Laravel aqui, se necessário.
                 ]);
+                $newUser->assignRole('user');
                 Auth::login($newUser);
             }
         }
 
         return redirect()->intended('/dashboard');
+    }
+
+    public function keycloakLogout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // 2. Obtém as variáveis de ambiente
+        $keycloakBaseUrl = config('services.keycloak.base_url');
+        $realm = config('services.keycloak.realms');
+        $clientId = config('services.keycloak.client_id');
+
+        // Define a URL para onde o Keycloak deve retornar após o logout.
+        // Usamos a rota de login do Laravel (ex: /login)
+        $postLogoutRedirectUri = route('login');
+
+        // 3. Constrói a URL de Logout do Keycloak (OIDC End Session Endpoint)
+        // Formato: {BASE_URL}/realms/{REALM}/protocol/openid-connect/logout?post_logout_redirect_uri={URL_DE_RETORNO}&client_id={CLIENT_ID}
+
+        $logoutUrl = $keycloakBaseUrl . '/realms/' . $realm .
+            '/protocol/openid-connect/logout?post_logout_redirect_uri=' . urlencode($postLogoutRedirectUri) .
+            '&client_id=' . urlencode($clientId);
+
+        // 4. Redireciona o usuário para o Keycloak para encerrar a sessão SSO
+        return redirect()->to($logoutUrl);
     }
 }

@@ -58,6 +58,7 @@ Route::get('/auth/redirect', [KeycloakController::class, 'redirectToKeycloak'])-
 
 // Rota de Callback (Retorno do Keycloak)
 Route::get('/auth/keycloak/callback', [KeycloakController::class, 'handleKeycloakCallback']);
+Route::post('/logout/sso', [KeycloakController::class, 'keycloakLogout'])->name('logout.sso');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
