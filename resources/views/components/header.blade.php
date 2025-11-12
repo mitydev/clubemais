@@ -5,7 +5,7 @@
       <!-- logo -->
       <div class="flex-shrink-0">
         <a href="{{ url('/') }}" aria-label="Clube+">
-          <img src="{{ asset('images/Logotipo.svg') }}" alt="Clube+">
+          <img src="{{ asset('images/novo_logo_320x100_tight.svg') }}" alt="Clube+">
         </a>
       </div>
 

@@ -27,7 +27,7 @@
   }
 
   // logo com domínio atual
-  $logoUrl = $toUrl($logoPath) ?? asset('images/Logotipov2.svg');
+  $logoUrl = $toUrl($logoPath) ?? asset('images/novo_logo_320x100_white.svg');
 
   // mapeia ícones default (se não houver upload)
   $iconMap = [
