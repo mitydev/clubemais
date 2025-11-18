@@ -13,7 +13,13 @@
   $badges  = is_array($c['badges'] ?? null) ? $c['badges'] : [];
 
   $ctaText = $c['cta_text'] ?? 'ASSINE JÁ';
-  $ctaUrl  = $c['cta_url']  ?? '#';
+
+  // URL do CTA: normaliza vazio / '#' como "sem link"
+  $rawCtaUrl = $c['cta_url'] ?? '';
+  $ctaUrl    = trim($rawCtaUrl);
+  if ($ctaUrl === '#' || $ctaUrl === '') {
+      $ctaUrl = '';
+  }
 
   // id único para o clipPath
   $clipId = 'shape-' . Str::uuid()->toString();
@@ -55,16 +61,22 @@
           </div>
         @endforeach
 
-        @if(!empty($ctaText))
+        @if(!empty($ctaUrl))
           {{-- CTA desktop com estilo inline (não depende de home.css) --}}
-        <div class="absolute bottom-0 button-assine-ja"
-            style="transform: translate(-6%, 8px);">
-          <a href="{{ $ctaUrl }}"
-            class="btn-assine"
-            style="display:inline-flex;align-items:center;justify-content:center;height:64px;padding:0 28px;border-radius:9999px;background:#39C0F2;color:#fff;font-weight:700;font-size:28px;line-height:1;white-space:nowrap;text-decoration:none;box-shadow:0 16px 40px rgba(57,192,242,.35);">
-            {{ $ctaText }}
-          </a>
-        </div>
+          <div class="absolute bottom-0 button-assine-ja"
+               style="transform: translate(-6%, 8px);">
+            <a href="{{ $ctaUrl }}"
+               class="btn-assine"
+               style="
+                 display:inline-flex;align-items:center;justify-content:center;
+                 height:64px;padding:0 28px;border-radius:9999px;
+                 background:#39C0F2;color:#fff;font-weight:700;font-size:28px;
+                 line-height:1;white-space:nowrap;text-decoration:none;
+                 box-shadow:0 16px 40px rgba(57,192,242,.35);
+               ">
+              {{ $ctaText }}
+            </a>
+          </div>
         @endif
       </div>
     @endif
@@ -81,7 +93,7 @@
       </div>
     @endif
 
-    @if(!empty($ctaText))
+    @if(!empty($ctaUrl))
       {{-- CTA mobile (fica full-width, como no seu CSS) --}}
       <div class="button-assine-ja-mobile" style="padding:0 16px; margin-top:12px; display:none;">
         <a href="{{ $ctaUrl }}"
