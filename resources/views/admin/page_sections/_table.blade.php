@@ -27,28 +27,39 @@
   {{-- Linha de edição --}}
   <tr>
     <td colspan="100" class="bg-light">
-      <form action="{{ route('page_sections.update', [$section->page, $section]) }}" method="post" class="p-3 js-section-edit" data-current-type="{{ $section->type }}">
-        @csrf @method('PUT')
+      <form action="{{ route('page_sections.update', [$section->page, $section]) }}"
+            method="post"
+            class="p-3 js-section-edit">
+        @csrf
+        @method('PUT')
 
         @php
-          // Agora usamos "content_json" para o textarea
+          $currentType = $section->type;
+
+          // valor para o textarea de JSON desta section
           $contentValue = old('content_json');
           if ($contentValue === null) {
               $contentValue = $stringify($section->content ?? '');
           }
-
-          $currentType  = $section->type;
         @endphp
 
         <div class="row g-3 align-items-end">
+          {{-- Coluna esquerda: posição / ativa / JSON --}}
           <div class="col-md-2">
             <label class="form-label">Posição</label>
-            <input type="number" name="position" value="{{ old('position', $section->position) }}" class="form-control">
+            <input type="number"
+                   name="position"
+                   value="{{ old('position', $section->position) }}"
+                   class="form-control">
 
             {{-- garante 0 quando desmarcado --}}
             <input type="hidden" name="is_active" value="0">
             <div class="form-check mt-2">
-              <input class="form-check-input" type="checkbox" name="is_active" value="1" {{ old('is_active',$section->is_active) ? 'checked' : '' }}>
+              <input class="form-check-input"
+                     type="checkbox"
+                     name="is_active"
+                     value="1"
+                     {{ old('is_active', $section->is_active) ? 'checked' : '' }}>
               <label class="form-check-label">Ativa</label>
             </div>
           </div>
@@ -63,133 +74,117 @@
             </small>
           </div>
 
+          {{-- Coluna direita: campos específicos do tipo --}}
           <div class="col-md-5">
-            {{-- HERO / SLIDER --}}
-            <div class="js-fields" data-type="hero_slider"
-                 style="display: {{ $currentType==='hero_slider' ? 'block' : 'none' }};">
-              @include('admin.page_sections.fields.hero_slider', [
-                'mode'     => 'edit',
-                'groups'   => $groups,
-                'defaults' => config('pagebuilder.sections.hero_slider.defaults'),
-                'data'     => $section,
-              ])
-            </div>
+            @switch($currentType)
 
-            {{-- O QUE É --}}
-            <div class="js-fields" data-type="oque_e"
-                style="display: {{ $currentType==='oque_e' ? 'block' : 'none' }};">
-              @include('admin.page_sections.fields.oque_e', [
-                'mode'     => 'edit',
-                'defaults' => config('pagebuilder.sections.oque_e.defaults'),
-                'data'     => $section,
-              ])
-            </div>
+              @case('hero_slider')
+                @include('admin.page_sections.fields.hero_slider', [
+                  'mode'     => 'edit',
+                  'groups'   => $groups,
+                  'defaults' => config('pagebuilder.sections.hero_slider.defaults'),
+                  'data'     => $section,
+                ])
+                @break
 
-            {{-- DESTINOS --}}
-            <div class="js-fields" data-type="destinations"
-                 style="display: {{ $currentType==='destinations' ? 'block' : 'none' }};">
-              @include('admin.page_sections.fields.destinations', [
-                'mode'        => 'edit',
-                'destGroups'  => $destGroups,
-                'defaults'    => config('pagebuilder.sections.destinations.defaults'),
-                'data'        => $section,
-              ])
-            </div>
+              @case('oque_e')
+                @include('admin.page_sections.fields.oque_e', [
+                  'mode'     => 'edit',
+                  'defaults' => config('pagebuilder.sections.oque_e.defaults'),
+                  'data'     => $section,
+                ])
+                @break
 
-            {{-- VANTAGENS --}}
-            <div class="js-fields" data-type="advantages"
-                 style="display: {{ $currentType==='advantages' ? 'block' : 'none' }};">
-              @include('admin.page_sections.fields.advantages', [
-                'mode'     => 'edit',
-                'defaults' => config('pagebuilder.sections.advantages.defaults'),
-                'data'     => $section,
-              ])
-            </div>
+              @case('destinations')
+                @include('admin.page_sections.fields.destinations', [
+                  'mode'        => 'edit',
+                  'destGroups'  => $destGroups,
+                  'defaults'    => config('pagebuilder.sections.destinations.defaults'),
+                  'data'        => $section,
+                ])
+                @break
 
-            {{-- FAQ --}}
-            <div class="js-fields" data-type="faq"
-                 style="display: {{ $currentType==='faq' ? 'block' : 'none' }};">
-              @include('admin.page_sections.fields.faq', [
-                'mode'     => 'edit',
-                'defaults' => config('pagebuilder.sections.faq.defaults'),
-                'section'  => $section,
-              ])
-            </div>
+              @case('advantages')
+                @include('admin.page_sections.fields.advantages', [
+                  'mode'     => 'edit',
+                  'defaults' => config('pagebuilder.sections.advantages.defaults'),
+                  'data'     => $section,
+                ])
+                @break
 
-            {{-- oqe_hero --}}
-            <div class="js-fields" data-type="oqe_hero"
-                 style="display: {{ $currentType==='oqe_hero' ? 'block' : 'none' }};">
-              @include('admin.page_sections.fields.oqe_hero', [
-                'mode'     => 'edit',
-                'defaults' => config('pagebuilder.sections.oqe_hero.defaults'),
-                'data'     => $section,
-              ])
-            </div>
+              @case('faq')
+                @include('admin.page_sections.fields.faq', [
+                  'mode'     => 'edit',
+                  'defaults' => config('pagebuilder.sections.faq.defaults'),
+                  'section'  => $section,
+                ])
+                @break
 
-            {{-- oqe_para_quem --}}
-            <div class="js-fields" data-type="oqe_para_quem"
-                 style="display: {{ $currentType==='oqe_para_quem' ? 'block' : 'none' }};">
-              @include('admin.page_sections.fields.oqe_para_quem', [
-                'mode'     => 'edit',
-                'defaults' => config('pagebuilder.sections.oqe_para_quem.defaults'),
-                'data'     => $section,
-              ])
-            </div>
+              @case('oqe_hero')
+                @include('admin.page_sections.fields.oqe_hero', [
+                  'mode'     => 'edit',
+                  'defaults' => config('pagebuilder.sections.oqe_hero.defaults'),
+                  'data'     => $section,
+                ])
+                @break
 
-            {{-- oqe_how --}}
-            <div class="js-fields" data-type="oqe_how"
-                 style="display: {{ $currentType==='oqe_how' ? 'block' : 'none' }};">
-              @include('admin.page_sections.fields.oqe_how', [
-                'mode'     => 'edit',
-                'defaults' => config('pagebuilder.sections.oqe_how.defaults'),
-                'data'     => $section,
-              ])
-            </div>
+              @case('oqe_para_quem')
+                @include('admin.page_sections.fields.oqe_para_quem', [
+                  'mode'     => 'edit',
+                  'defaults' => config('pagebuilder.sections.oqe_para_quem.defaults'),
+                  'data'     => $section,
+                ])
+                @break
 
-            {{-- oqe_depo --}}
-            <div class="js-fields" data-type="oqe_depo"
-                 style="display: {{ $currentType==='oqe_depo' ? 'block' : 'none' }};">
-              @include('admin.page_sections.fields.oqe_depo', [
-                'mode'     => 'edit',
-                'defaults' => config('pagebuilder.sections.oqe_depo.defaults'),
-                'data'     => $section,
-              ])
-            </div>
+              @case('oqe_how')
+                @include('admin.page_sections.fields.oqe_how', [
+                  'mode'     => 'edit',
+                  'defaults' => config('pagebuilder.sections.oqe_how.defaults'),
+                  'data'     => $section,
+                ])
+                @break
 
-            <div class="js-fields" data-type="beneficios_intro" style="display: {{ $currentType==='beneficios_intro' ? 'block' : 'none' }};">
-              @include('admin.page_sections.fields.beneficios_intro', [
-                'mode'     => 'edit',
-                'defaults' => config('pagebuilder.sections.beneficios_intro.defaults'),
-                'data'     => $section,
-              ])
-            </div>
+              @case('oqe_depo')
+                @include('admin.page_sections.fields.oqe_depo', [
+                  'mode'     => 'edit',
+                  'defaults' => config('pagebuilder.sections.oqe_depo.defaults'),
+                  'data'     => $section,
+                ])
+                @break
 
-            <div class="js-fields" data-type="beneficios_numbers" style="display: {{ $currentType==='beneficios_numbers' ? 'block' : 'none' }};">
-              @include('admin.page_sections.fields.beneficios_numbers', [
-                'mode'     => 'edit',
-                'defaults' => config('pagebuilder.sections.beneficios_numbers.defaults'),
-                'data'     => $section,
-              ])
-            </div>
+              @case('beneficios_intro')
+                @include('admin.page_sections.fields.beneficios_intro', [
+                  'mode'     => 'edit',
+                  'defaults' => config('pagebuilder.sections.beneficios_intro.defaults'),
+                  'data'     => $section,
+                ])
+                @break
 
-            {{-- parc_rules --}}
-            <div class="js-fields" data-type="parc_rules" style="display: {{ $currentType==='parc_rules' ? 'block':'none' }};">
-              @include('admin.page_sections.fields.parc_rules', [
-                'mode'     => 'edit',
-                'defaults' => config('pagebuilder.sections.parc_rules.defaults'),
-                'data'     => $section,
-              ])
-            </div>
+              @case('beneficios_numbers')
+                @include('admin.page_sections.fields.beneficios_numbers', [
+                  'mode'     => 'edit',
+                  'defaults' => config('pagebuilder.sections.beneficios_numbers.defaults'),
+                  'data'     => $section,
+                ])
+                @break
 
-            {{-- parc_partner --}}
-            <div class="js-fields" data-type="parc_partner" style="display: {{ $currentType==='parc_partner' ? 'block':'none' }};">
-              @include('admin.page_sections.fields.parc_partner', [
-                'mode'     => 'edit',
-                'defaults' => config('pagebuilder.sections.parc_partner.defaults'),
-                'data'     => $section,
-              ])
-            </div>
+              @case('parc_rules')
+                @include('admin.page_sections.fields.parc_rules', [
+                  'mode'     => 'edit',
+                  'defaults' => config('pagebuilder.sections.parc_rules.defaults'),
+                  'data'     => $section,
+                ])
+                @break
 
+              @case('parc_partner')
+                @include('admin.page_sections.fields.parc_partner', [
+                  'mode'     => 'edit',
+                  'defaults' => config('pagebuilder.sections.parc_partner.defaults'),
+                  'data'     => $section,
+                ])
+                @break
+
+            @endswitch
           </div>
         </div>
 
@@ -199,17 +194,4 @@
       </form>
     </td>
   </tr>
-
-  {{-- Script: desabilita inputs dos blocos escondidos --}}
-  <script>
-    (function(){
-      const form = document.currentScript.closest('tr').querySelector('form.js-section-edit');
-      if (!form) return;
-      const blocks = form.querySelectorAll('.js-fields');
-      blocks.forEach(block => {
-        const visible = getComputedStyle(block).display !== 'none';
-        block.querySelectorAll('input,select,textarea,button').forEach(el => el.disabled = !visible);
-      });
-    })();
-  </script>
 @endforeach

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\{Page, PageSection, Banner, Destination};
+use Illuminate\Support\Facades\Log;
 
 class PageSectionController extends Controller
 {
@@ -60,14 +61,40 @@ class PageSectionController extends Controller
         $reg  = config("pagebuilder.sections.$type");
         abort_unless($reg, 422, 'Tipo de seção inválido.');
 
-        // ✅ SEMPRE ler o content (mesmo sem rules)
+        // 1) Lê o conteúdo vindo do form (content[...])
         $payload = $this->readContent($r);
-        $rules   = $reg['rules'] ?? [];
+        if (!is_array($payload)) {
+            $payload = [];
+        }
 
-        $data = $rules ? validator($payload, $rules)->validate() : $payload;
+        // 2) Valida somente o que tem regra, mas sem perder chaves do payload
+        $rules = $reg['rules'] ?? [];
+
+        if (!empty($rules)) {
+            $validated = validator($payload, $rules)->validate();
+            $data = array_merge($payload, $validated);
+        } else {
+            $data = $payload;
+        }
+
+        // 🔎 Força leitura explícita de campos "sensíveis" (só pra garantir)
+        if ($type === 'oque_e') {
+            $text = $r->input('content.text');
+            if ($text !== null) {
+                $data['text'] = $text;
+            }
+        }
+        if ($type === 'advantages') {
+            $title = $r->input('content.title');
+            if ($title !== null) {
+                $data['title'] = $title;
+            }
+        }
+
+        // 3) Normaliza campos específicos por tipo
         $data = $this->normalizeContent($type, $data, $reg['defaults'] ?? []);
 
-        // extras
+        // 4) Extras (posição, ativo, banners, destinos, etc.)
         $extra = $r->validate([
             'position'               => ['nullable','integer'],
             'is_active'              => ['sometimes','boolean'],
@@ -81,7 +108,7 @@ class PageSectionController extends Controller
 
         $position = ($page->sections()->max('position') ?? 0) + 10;
 
-        // meta
+        // 5) Meta
         $meta = [];
         if ($type === 'hero_slider') {
             $meta['banner_group_id'] = $extra['banner_group_id'] ?? null;
@@ -92,18 +119,23 @@ class PageSectionController extends Controller
             $meta['destination_order']    = $extra['destination_order']    ?? 'position_asc';
         }
 
+        // 6) Cria a section com defaults + data
         $section = $page->sections()->create([
             'type'      => $type,
             'position'  => (int) $r->input('position', $position),
             'is_active' => (bool) $r->input('is_active', true),
-            // defaults mesclados com o que veio do form
             'content'   => array_replace($reg['defaults'] ?? [], $data),
             'meta'      => $meta,
         ]);
 
+        // 7) HERO SLIDER – vincula banners
         if ($type === 'hero_slider') {
             if (!empty($extra['banner_group_id'])) {
-                $this->syncBannersFromGroup($section, (int)$extra['banner_group_id'], $extra['banner_order'] ?? 'created_asc');
+                $this->syncBannersFromGroup(
+                    $section,
+                    (int) $extra['banner_group_id'],
+                    $extra['banner_order'] ?? 'created_asc'
+                );
             } elseif (!empty($extra['banner_ids'])) {
                 $this->syncBannersByIds($section, $extra['banner_ids']);
             } else {
@@ -111,8 +143,8 @@ class PageSectionController extends Controller
             }
         }
 
-        // DESTINATIONS  ⬇️
-        if ($section->type === 'destinations') {
+        // 8) DESTINATIONS – vincula destinos
+        if ($type === 'destinations') {
             if (!empty($extra['destination_group_id'])) {
                 $this->syncDestinationsFromGroup(
                     $section,
@@ -129,15 +161,54 @@ class PageSectionController extends Controller
 
     public function update(Request $r, Page $page, PageSection $section)
     {
-        
         abort_unless($section->page_id === $page->id, 404);
 
-        $reg     = config("pagebuilder.sections.{$section->type}");
-        $rules   = $reg['rules'] ?? [];
-        $payload = $this->readContent($r);
+        $type = $section->type;
+        $reg  = config("pagebuilder.sections.{$type}");
+        $rules = $reg['rules'] ?? [];
 
-        $data = $rules ? validator($payload, $rules)->validate() : $payload;
-        $data = $this->normalizeContent($section->type, $data, $reg['defaults'] ?? []);
+        // 1) Lê o conteúdo vindo do form (content[...])
+        $payload = $this->readContent($r);
+        if (!is_array($payload)) {
+            $payload = [];
+        }
+
+        // 2) Valida somente o que tem regra, mas sem perder chaves do payload
+        if (!empty($rules)) {
+            $validated = validator($payload, $rules)->validate();
+            $data = array_merge($payload, $validated);
+        } else {
+            $data = $payload;
+        }
+
+        if (in_array($type, ['oque_e','advantages'])) {
+            Log::debug('[PageSectionUpdate DEBUG]', [
+                'type'            => $type,
+                'content_input'   => $r->input('content', []),
+                'payload'         => $payload,
+                'data_final'      => $data,
+                'content_before'  => $section->content,
+            ]);
+        }
+
+        // 🔎 Força leitura explícita daqueles campos chatos
+        if ($type === 'oque_e') {
+            $text = $r->input('content.text');
+            if ($text !== null) {
+                $data['text'] = $text;
+            }
+        }
+        if ($type === 'advantages') {
+            $title = $r->input('content.title');
+            if ($title !== null) {
+                $data['title'] = $title;
+            }
+        }
+
+        // 3) Normaliza campos específicos por tipo
+        $data = $this->normalizeContent($type, $data, $reg['defaults'] ?? []);
+
+        // 4) Extras
         $extra = $r->validate([
             'position'               => ['nullable','integer'],
             'is_active'              => ['sometimes','boolean'],
@@ -149,28 +220,35 @@ class PageSectionController extends Controller
             'destination_order'      => ['nullable','in:position_asc,position_desc,created_asc,created_desc,title_asc,title_desc'],
         ]);
 
-        // base
+        // 5) Campos base
         $section->position  = (int) $r->input('position', $section->position);
         $section->is_active = (bool) $r->input('is_active', true);
-        // ✅ agora os campos do lado realmente sobrescrevem
-        $section->content   = array_replace((array)($section->content ?? []), $data);
 
-        // meta
+        // 6) Conteúdo: sempre defaults + data (não reaproveita lixo antigo)
+        $section->content = array_replace($reg['defaults'] ?? [], $data);
+
+        // 7) Meta
         $meta = (array) ($section->meta ?? []);
-        if ($section->type === 'hero_slider') {
+        if ($type === 'hero_slider') {
             $meta['banner_group_id'] = $extra['banner_group_id'] ?? ($meta['banner_group_id'] ?? null);
             $meta['banner_order']    = $extra['banner_order']    ?? ($meta['banner_order']    ?? 'created_asc');
         }
-        if ($section->type === 'destinations') {
+        if ($type === 'destinations') {
             $meta['destination_group_id'] = $extra['destination_group_id'] ?? ($meta['destination_group_id'] ?? null);
             $meta['destination_order']    = $extra['destination_order']    ?? ($meta['destination_order']    ?? 'position_asc');
         }
         $section->meta = $meta;
+
         $section->save();
 
-        if ($section->type === 'hero_slider') {
+        // 8) HERO SLIDER – vincula banners
+        if ($type === 'hero_slider') {
             if (!empty($extra['banner_group_id'])) {
-                $this->syncBannersFromGroup($section, (int)$extra['banner_group_id'], $extra['banner_order'] ?? ($meta['banner_order'] ?? 'created_asc'));
+                $this->syncBannersFromGroup(
+                    $section,
+                    (int) $extra['banner_group_id'],
+                    $extra['banner_order'] ?? ($meta['banner_order'] ?? 'created_asc')
+                );
             } elseif (!empty($extra['banner_ids'])) {
                 $this->syncBannersByIds($section, $extra['banner_ids']);
             } else {
@@ -178,8 +256,8 @@ class PageSectionController extends Controller
             }
         }
 
-        // DESTINATIONS  ⬇️
-        if ($section->type === 'destinations') {
+        // 9) DESTINATIONS – vincula destinos
+        if ($type === 'destinations') {
             if (!empty($extra['destination_group_id'])) {
                 $this->syncDestinationsFromGroup(
                     $section,
