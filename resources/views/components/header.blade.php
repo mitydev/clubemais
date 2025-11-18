@@ -5,7 +5,7 @@
       <!-- logo -->
       <div class="flex-shrink-0">
         <a href="{{ url('/') }}" aria-label="Clube+">
-          <img src="{{ asset('images/novo_logo_320x100_tight.svg') }}" alt="Clube+">
+          <img src="{{ asset('images/novo_logo_320x100_tight.svg') }}"  class="h-9 md:h-11 lg:h-12 w-auto" alt="Clube+">
         </a>
       </div>
 
@@ -15,6 +15,7 @@
         <!-- <a href="#" class="hover:text-black/80">Hotéis & Resorts</a> -->
         <a href="{{ route('beneficios') }}" class="hover:text-black/80">Benefícios</a>
         <a href="{{ route('parceiros') }}" class="hover:text-black/80">Parceiros</a>
+        <a href="{{ route('faq') }}" class="hover:text-black/80">Faq</a>
         <!-- <a href="#" class="hover:text-black/80">FAQ</a> -->
         <!-- <a href="#" class="hover:text-black/80">Contato</a> -->
       </nav>
@@ -74,6 +75,7 @@
         <!-- <a href="#" class="block">Hotéis & Resorts</a> -->
         <a href="{{ route('beneficios') }}" class="block">Benefícios</a>
         <a href="{{ route('parceiros') }}" class="block">Parceiros</a>
+        <a href="{{ route('faq') }}" class="block">Faq</a>
         <!-- <a href="#" class="block">FAQ</a> -->
         <!-- <a href="#" class="block">Contato</a> -->
       </nav>

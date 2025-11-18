@@ -31,7 +31,12 @@
         @csrf @method('PUT')
 
         @php
-          $contentValue = old('content') !== null ? $stringify(old('content')) : $stringify($section->content ?? '');
+          // Agora usamos "content_json" para o textarea
+          $contentValue = old('content_json');
+          if ($contentValue === null) {
+              $contentValue = $stringify($section->content ?? '');
+          }
+
           $currentType  = $section->type;
         @endphp
 
@@ -50,8 +55,12 @@
 
           <div class="col-md-5">
             <label class="form-label">Conteúdo (JSON) — opcional</label>
-            <textarea name="content" rows="6" class="form-control">{{ $contentValue }}</textarea>
-            <small class="text-muted d-block mt-1">Se preferir, use os campos ao lado e deixe este em branco.</small>
+            <textarea name="content_json"
+                      rows="6"
+                      class="form-control">{{ old('content_json', $contentValue) }}</textarea>
+            <small class="text-muted d-block mt-1">
+              Se preferir, use os campos ao lado e deixe este em branco.
+            </small>
           </div>
 
           <div class="col-md-5">
@@ -68,7 +77,7 @@
 
             {{-- O QUE É --}}
             <div class="js-fields" data-type="oque_e"
-                 style="display: {{ $currentType==='oque_e' ? 'block' : 'none' }};">
+                style="display: {{ $currentType==='oque_e' ? 'block' : 'none' }};">
               @include('admin.page_sections.fields.oque_e', [
                 'mode'     => 'edit',
                 'defaults' => config('pagebuilder.sections.oque_e.defaults'),
@@ -96,9 +105,20 @@
                 'data'     => $section,
               ])
             </div>
+
+            {{-- FAQ --}}
+            <div class="js-fields" data-type="faq"
+                 style="display: {{ $currentType==='faq' ? 'block' : 'none' }};">
+              @include('admin.page_sections.fields.faq', [
+                'mode'     => 'edit',
+                'defaults' => config('pagebuilder.sections.faq.defaults'),
+                'section'  => $section,
+              ])
+            </div>
+
             {{-- oqe_hero --}}
             <div class="js-fields" data-type="oqe_hero"
-                style="display: {{ $currentType==='oqe_hero' ? 'block' : 'none' }};">
+                 style="display: {{ $currentType==='oqe_hero' ? 'block' : 'none' }};">
               @include('admin.page_sections.fields.oqe_hero', [
                 'mode'     => 'edit',
                 'defaults' => config('pagebuilder.sections.oqe_hero.defaults'),
@@ -108,7 +128,7 @@
 
             {{-- oqe_para_quem --}}
             <div class="js-fields" data-type="oqe_para_quem"
-                style="display: {{ $currentType==='oqe_para_quem' ? 'block' : 'none' }};">
+                 style="display: {{ $currentType==='oqe_para_quem' ? 'block' : 'none' }};">
               @include('admin.page_sections.fields.oqe_para_quem', [
                 'mode'     => 'edit',
                 'defaults' => config('pagebuilder.sections.oqe_para_quem.defaults'),
@@ -118,7 +138,7 @@
 
             {{-- oqe_how --}}
             <div class="js-fields" data-type="oqe_how"
-                style="display: {{ $currentType==='oqe_how' ? 'block' : 'none' }};">
+                 style="display: {{ $currentType==='oqe_how' ? 'block' : 'none' }};">
               @include('admin.page_sections.fields.oqe_how', [
                 'mode'     => 'edit',
                 'defaults' => config('pagebuilder.sections.oqe_how.defaults'),
@@ -128,7 +148,7 @@
 
             {{-- oqe_depo --}}
             <div class="js-fields" data-type="oqe_depo"
-                style="display: {{ $currentType==='oqe_depo' ? 'block' : 'none' }};">
+                 style="display: {{ $currentType==='oqe_depo' ? 'block' : 'none' }};">
               @include('admin.page_sections.fields.oqe_depo', [
                 'mode'     => 'edit',
                 'defaults' => config('pagebuilder.sections.oqe_depo.defaults'),
@@ -136,7 +156,7 @@
               ])
             </div>
 
-            <div class="js-fields" data-type="beneficios_intro" style="display: {{   $currentType==='beneficios_intro' ? 'block' : 'none' }};">
+            <div class="js-fields" data-type="beneficios_intro" style="display: {{ $currentType==='beneficios_intro' ? 'block' : 'none' }};">
               @include('admin.page_sections.fields.beneficios_intro', [
                 'mode'     => 'edit',
                 'defaults' => config('pagebuilder.sections.beneficios_intro.defaults'),
@@ -152,7 +172,7 @@
               ])
             </div>
 
-            {{-- edit (_table) --}}
+            {{-- parc_rules --}}
             <div class="js-fields" data-type="parc_rules" style="display: {{ $currentType==='parc_rules' ? 'block':'none' }};">
               @include('admin.page_sections.fields.parc_rules', [
                 'mode'     => 'edit',
@@ -161,6 +181,7 @@
               ])
             </div>
 
+            {{-- parc_partner --}}
             <div class="js-fields" data-type="parc_partner" style="display: {{ $currentType==='parc_partner' ? 'block':'none' }};">
               @include('admin.page_sections.fields.parc_partner', [
                 'mode'     => 'edit',
@@ -169,7 +190,6 @@
               ])
             </div>
 
-            
           </div>
         </div>
 

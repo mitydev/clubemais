@@ -409,6 +409,10 @@ return [
             'label'            => 'Parceiros',
             'allowed_sections' => ['hero_slider','parc_rules','parc_partner'],
         ],
+        'faq_page' => [
+            'label'     => 'Página: Perguntas Frequentes (FAQ)',
+            'allowed_sections' => ['hero_slider', 'faq', 'content'],
+        ],
         'default' => [
             'label'            => 'Padrão',
             'allowed_sections' => ['content'],

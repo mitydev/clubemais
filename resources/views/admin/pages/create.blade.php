@@ -42,6 +42,7 @@
                   <option value="/o-que-e" {{ old('slug') == '/o-que-e' ? 'selected' : '' }}>/o-que-e</option>
                   <option value="/beneficios" {{ old('slug') == '/beneficios' ? 'selected' : '' }}>/beneficios</option>
                   <option value="/parceiros" {{ old('slug') == '/parceiros' ? 'selected' : '' }}>/parceiros</option>
+                   <option value="/faq" {{ old('slug') == '/faq' ? 'selected' : '' }}>/faq</option>
                   <!-- <option value="/contato" {{ old('slug') == '/contato' ? 'selected' : '' }}>/contato</option>
                   <option value="/servicos" {{ old('slug') == '/servicos' ? 'selected' : '' }}>/servicos</option> -->
                 </select>

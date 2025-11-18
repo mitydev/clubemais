@@ -54,8 +54,13 @@
   {{-- Conteúdo JSON (opcional) --}}
   <div class="mb-3 mt-3">
     <label class="form-label">Conteúdo (JSON) — opcional</label>
-    <textarea name="content" class="form-control" rows="6" placeholder="{}">{{ $oldContent }}</textarea>
-    <small class="text-muted">Se preferir, preencha os campos abaixo e deixe este em branco.</small>
+    <textarea name="content_json"
+              class="form-control"
+              rows="6"
+              placeholder="{}">{{ old('content_json', $oldContentJson ?? '') }}</textarea>
+    <small class="text-muted">
+      Se preferir, preencha os campos abaixo e deixe este em branco.
+    </small>
   </div>
 
   {{-- BLOCO DE CAMPOS POR TIPO --}}
@@ -168,6 +173,13 @@
         'old'      => request()->old(),
       ])
     </div>
+    <div class="js-fields" data-type="faq">
+      @include('admin.page_sections.fields.faq', [
+          'mode'     => 'create',
+          'defaults' => config('pagebuilder.sections.faq.defaults'),
+          'old'      => request()->old(),
+      ])
+    </div>
 
   </div>
 
@@ -181,6 +193,12 @@
   (function () {
     const select = document.getElementById('js-type-create');
     const blocks = Array.from(document.querySelectorAll('.js-fields'));
+
+    blocks.forEach(block => {
+      const visible = getComputedStyle(block).display !== 'none';
+      block.querySelectorAll('input,select,textarea,button')
+          .forEach(el => el.disabled = !visible);
+    });
 
     function toggleBlocks() {
       const t = select.value;

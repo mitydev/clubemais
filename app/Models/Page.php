@@ -38,4 +38,6 @@ class Page extends Model
     {
         return $this->sections()->where('is_active', true);
     }
+
+    
 }

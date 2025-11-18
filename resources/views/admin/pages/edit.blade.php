@@ -52,6 +52,7 @@
                   <option value="/o-que-e" {{ old('slug', $page->slug) == '/o-que-e' ? 'selected' : '' }}>/o-que-e</option>
                   <option value="/beneficios" {{ old('slug', $page->slug) == '/beneficios' ? 'selected' : '' }}>/beneficios</option>
                   <option value="/parceiros" {{ old('slug', $page->slug) == '/parceiros' ? 'selected' : '' }}>/parceiros</option>
+                  <option value="/faq" {{ old('slug', $page->slug) == '/faq' ? 'selected' : '' }}>/faq</option>
                 </select>
                 <small class="text-muted">Selecione o slug da página</small>
               </div>

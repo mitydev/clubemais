@@ -8,14 +8,30 @@ use App\Models\{Page, PageSection, Banner, Destination};
 
 class PageSectionController extends Controller
 {
-    private function readContent(Request $r): array
+    protected function readContent(Request $r): array
     {
-        $raw = $r->input('content', []);
-        if (is_array($raw)) return $raw;
-        if (is_string($raw) && $raw !== '') {
-            $decoded = json_decode($raw, true);
-            return is_array($decoded) ? $decoded : [];
+        // 1) Campos estruturados (inputs content[...])
+        $content = $r->input('content', []);
+
+        // se vier como string por algum bug, descarta
+        if (!is_array($content)) {
+            $content = [];
         }
+
+        // Se tiver qualquer coisa, usamos só isso
+        if (!empty($content)) {
+            return $content;
+        }
+
+        // 2) Só se não tiver NADA em content[...] é que olhamos o JSON
+        $jsonString = $r->input('content_json');
+        if (is_string($jsonString) && trim($jsonString) !== '') {
+            $decoded = json_decode($jsonString, true);
+            if (is_array($decoded)) {
+                return $decoded;
+            }
+        }
+
         return [];
     }
 
@@ -34,7 +50,6 @@ class PageSectionController extends Controller
             $data['layout']       = $data['layout']       ?? ($defaults['layout'] ?? 'cards-4');
             $data['button_text']  = $data['button_text']  ?? ($defaults['button_text'] ?? 'Veja o Hotel');
         }
-
         // adicione aqui normalizações para outras sections se quiser
         return $data;
     }
@@ -114,7 +129,7 @@ class PageSectionController extends Controller
 
     public function update(Request $r, Page $page, PageSection $section)
     {
-        // dd($section);
+        
         abort_unless($section->page_id === $page->id, 404);
 
         $reg     = config("pagebuilder.sections.{$section->type}");
@@ -123,7 +138,6 @@ class PageSectionController extends Controller
 
         $data = $rules ? validator($payload, $rules)->validate() : $payload;
         $data = $this->normalizeContent($section->type, $data, $reg['defaults'] ?? []);
-
         $extra = $r->validate([
             'position'               => ['nullable','integer'],
             'is_active'              => ['sometimes','boolean'],

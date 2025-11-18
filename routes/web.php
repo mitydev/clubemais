@@ -10,6 +10,7 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\BannersController;
 use App\Http\Controllers\BeneficiosController;
 use App\Http\Controllers\DestinationController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\FooterSettingsController;
 use App\Http\Controllers\OqueEController;
 use App\Http\Controllers\PageController;
@@ -71,15 +72,9 @@ Route::get('/o-que-e', [OqueEController::class, 'OqueE'])->name('o-que-e');
 
 Route::get('/beneficios', [BeneficiosController::class, 'show'])->name('beneficios');
 
-// Route::get('/beneficios', function () {
-//     return view('beneficios');
-// })->name("beneficios");
-
 Route::get('/parceiros', [ParceirosController::class, 'show'])->name('parceiros');
 
-// Route::get('/parceiros', function () {
-//     return view('parceiros');
-// })->name('parceiros');
+Route::get('/faq', [FaqController::class, 'show'])->name('faq');
 
 Route::post('/ajax/get-taxonomy-slug', [LocalController::class, 'slugById'])
     ->name('ajax.taxonomy.slug');
