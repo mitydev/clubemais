@@ -30,7 +30,7 @@
                   </button>
               </form>
           @else
-              <a href="{{ route('login') }}"
+              <a href="{{ route('login.sso') }}"
                  class="px-5 py-2 bg-[#F46E00] text-white rounded-full hover:brightness-110">
                   Login
               </a>
