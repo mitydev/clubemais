@@ -399,7 +399,7 @@ return [
         ],
         'o_que_e' => [
             'label'            => 'Página: O que é',
-            'allowed_sections' => ['oqe_hero','oqe_para_quem','oqe_how','oqe_depo'],
+            'allowed_sections' => ['oqe_hero','oqe_para_quem','oqe_how','oqe_depo','content'],
         ],
         'beneficios' => [
             'label'            => 'Benefícios',
