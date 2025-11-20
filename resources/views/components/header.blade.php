@@ -1,46 +1,73 @@
+@php
+  $cfg = site_setting('navbar') ?? [];
+
+  $toUrl = function (?string $path) {
+      if (!$path) return null;
+      if (preg_match('#^(https?:)?//#', $path)) {
+          return $path;
+      }
+      return asset($path);
+  };
+
+  $logoPath = data_get($cfg, 'logo_path');
+  $logoUrl  = $toUrl($logoPath) ?? asset('images/novo_logo_320x100_tight.svg');
+
+  $menu = collect(data_get($cfg, 'menu', []))
+      ->filter(fn($r) => !empty($r['label']) && !empty($r['href']))
+      ->values();
+
+  // 🔹 Verifica se já existe um item que aponte para a home
+  $hasHomeInMenu = $menu->contains(function ($item) {
+      $href = $item['href'] ?? '';
+      return $href === '/' || $href === url('/');
+  });
+@endphp
+
 <header class="bg-white">
   <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-[80px] md:h-[90px] lg:h-[100px]">
 
-      <!-- logo -->
+      {{-- logo --}}
       <div class="flex-shrink-0">
         <a href="{{ url('/') }}" aria-label="Clube+">
-          <img src="{{ asset('images/novo_logo_320x100_tight.svg') }}"  class="h-9 md:h-11 lg:h-12 w-auto" alt="Clube+">
+          <img src="{{ $logoUrl }}" class="h-9 md:h-11 lg:h-12 w-auto" alt="Clube+">
         </a>
       </div>
 
-      <!-- NAV DESKTOP (só >= 1024px) -->
+      {{-- NAV DESKTOP --}}
       <nav class="hidden lg:flex items-center gap-6 xl:gap-8 2xl:gap-10 menu-content text-[15px] xl:text-base whitespace-nowrap">
-        <a href="{{ route('o-que-e') }}" class="hover:text-black/80">O que é</a>
-        <!-- <a href="#" class="hover:text-black/80">Hotéis & Resorts</a> -->
-        <!--<a href="{{ route('beneficios') }}" class="hover:text-black/80">Benefícios</a>-->
-        <!--<a href="{{ route('parceiros') }}" class="hover:text-black/80">Parceiros</a>-->
-        <a href="{{ route('faq') }}" class="hover:text-black/80">Faq</a>
-        <!-- <a href="#" class="hover:text-black/80">FAQ</a> -->
-        <!-- <a href="#" class="hover:text-black/80">Contato</a> -->
+        @foreach($menu as $item)
+          @php
+            $href = $item['href'];
+            $isExternal = !empty($item['is_external']);
+          @endphp
+          <a href="{{ $href }}"
+             @if($isExternal) target="_blank" rel="noopener" @endif
+             class="hover:text-black/80">
+            {{ $item['label'] }}
+          </a>
+        @endforeach
       </nav>
 
-      <!-- AÇÕES DESKTOP (só >= 1024px) -->
+      {{-- AÇÕES DESKTOP (mantive a lógica de login/logout igual) --}}
       <div class="hidden lg:flex items-center gap-4">
-          @if(auth()->check())
-              <form action="{{ route('logout.sso') }}" method="POST">
-                  @csrf
-                  <button type="submit"
-                          class="px-5 py-2 bg-red-600 text-white rounded-full hover:brightness-110">
-                      Sair
-                  </button>
-              </form>
-          @else
-              <a href="{{ route('login.sso') }}"
-                 class="px-5 py-2 bg-[#F46E00] text-white rounded-full hover:brightness-110">
-                  Login
-              </a>
-          @endif
-        <!-- o “menu” de três linhas no desktop causava ruído; esconda-o -->
-        <!-- <button class="hidden xl:block">…</button> -->
+        @if(auth()->check())
+          <form action="{{ route('logout.sso') }}" method="POST">
+            @csrf
+            <button type="submit"
+                    class="px-5 py-2 bg-red-600 text-white rounded-full hover:brightness-110">
+              Sair
+            </button>
+          </form>
+        @else
+          <a href="{{ route('login.sso') }}"
+             class="px-5 py-2 bg-[#F46E00] text-white rounded-full hover:brightness-110">
+            Login
+          </a>
+        @endif
       </div>
 
-      <!-- TRIGGER MOBILE/TABLET (até <1024px) -->
+      {{-- TRIGGER MOBILE --}}
       <div class="lg:hidden">
         <button id="drawer-open" aria-controls="mobile-drawer" aria-expanded="false"
                 class="p-2 rounded-md text-gray-700 hover:bg-black/5 focus:outline-none">
@@ -53,8 +80,8 @@
     </div>
   </div>
 
-  <!-- OFF-CANVAS (mobile/tablet) -->
-  <div id="mobile-drawer" class="fixed inset-0 z-[100] lg:hidden pointer-events-none" aria-hidden="true">
+  {{-- OFF-CANVAS MOBILE --}}
+  <div id="mobile-drawer" class="fixed inset-0 z-[99999] lg:hidden pointer-events-none" aria-hidden="true">
     <div id="drawer-backdrop" class="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-200 ease-out"></div>
 
     <aside id="drawer-panel" tabindex="-1"
@@ -70,20 +97,39 @@
       </div>
 
       <nav class="p-4 space-y-5 text-lg">
-        <a href="/" class="block">Home</a>
-        <a href="{{ route('o-que-e') }}" class="block">O que é</a>
-        <!-- <a href="#" class="block">Hotéis & Resorts</a> -->
-        <!--<a href="{{ route('beneficios') }}" class="block">Benefícios</a>-->
-        <!--<a href="{{ route('parceiros') }}" class="block">Parceiros</a>-->
-        <a href="{{ route('faq') }}" class="block">Faq</a>
-        <!-- <a href="#" class="block">FAQ</a> -->
-        <!-- <a href="#" class="block">Contato</a> -->
+        {{-- Home fixa só se NÃO existir no menu configurado --}}
+        @unless($hasHomeInMenu)
+          <a href="{{ url('/') }}" class="block">Home</a>
+        @endunless
+
+        @foreach($menu as $item)
+          @php
+            $href = $item['href'];
+            $isExternal = !empty($item['is_external']);
+          @endphp
+          <a href="{{ $href }}"
+            @if($isExternal) target="_blank" rel="noopener" @endif
+            class="block">
+            {{ $item['label'] }}
+          </a>
+        @endforeach
       </nav>
 
       <div class="mt-auto p-4 border-t">
-        <a href="#" class="w-full inline-flex items-center justify-center px-6 py-3 bg-[#F46E00] text-white rounded-full">
-          Login
-        </a>
+        @if(auth()->check())
+          <form action="{{ route('logout.sso') }}" method="POST">
+            @csrf
+            <button type="submit"
+                    class="w-full inline-flex items-center justify-center px-6 py-3 bg-red-600 text-white rounded-full">
+              Sair
+            </button>
+          </form>
+        @else
+          <a href="{{ route('login.sso') }}"
+             class="w-full inline-flex items-center justify-center px-6 py-3 bg-[#F46E00] text-white rounded-full">
+            Login
+          </a>
+        @endif
       </div>
     </aside>
   </div>

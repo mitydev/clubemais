@@ -85,13 +85,13 @@
                 $iconSrc  = $iconUploaded ?: $iconFallback;
               @endphp
               @if($iconSrc)
-              <!--
+              
                 <li>
                   <a class="{{ $btn }}" href="{{ $href }}" target="_blank" rel="noopener">
                     <img src="{{ $iconSrc }}" alt="" class="w-5 h-5">
                   </a>
                 </li>
-                -->
+               
               @endif
             @endforeach
           </ul>

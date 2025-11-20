@@ -220,8 +220,12 @@
 
             {{-- Configurações (submenu) – Footer --}}
             @php
-                // ajuste os patterns conforme o prefixo usado nas rotas do admin:
-                $isSettings = request()->routeIs('admin.footer.*') || request()->routeIs('settings.*');
+                // abre "Configurações" em Footer **e** Navbar
+                $isSettings = request()->routeIs(
+                    'admin.footer.*',
+                    'admin.navbar.*',
+                    'settings.*',   // se ainda fizer sentido manter
+                );
             @endphp
             <li class="nav-item {{ $isSettings ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link {{ $isSettings ? 'active' : '' }}">
@@ -229,14 +233,23 @@
                 <p>Configurações <i class="nav-arrow bi bi-chevron-right"></i></p>
                 </a>
                 <ul class="nav nav-treeview small ps-3 ms-2 my-1 border-start border-1 border-secondary-subtle rounded-1">
-                <li class="nav-item">
-                    <a href="{{ route('admin.footer.edit') }}"
-                    class="nav-link {{ request()->routeIs('admin.footer.*') ? 'active' : '' }}"
-                    @if(request()->routeIs('admin.footer.*')) aria-current="page" @endif>
-                    <i class="nav-icon bi bi-ui-checks-grid"></i>
-                    <p>Footer</p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.navbar.edit') }}"
+                        class="nav-link {{ request()->routeIs('admin.navbar.*') ? 'active' : '' }}"
+                        @if(request()->routeIs('admin.navbar.*')) aria-current="page" @endif>
+                            <i class="nav-icon bi bi-menu-button-wide"></i>
+                            <p>Navbar</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('admin.footer.edit') }}"
+                        class="nav-link {{ request()->routeIs('admin.footer.*') ? 'active' : '' }}"
+                        @if(request()->routeIs('admin.footer.*')) aria-current="page" @endif>
+                            <i class="nav-icon bi bi-ui-checks-grid"></i>
+                            <p>Footer</p>
+                        </a>
+                    </li>
                 </ul>
             </li>
 

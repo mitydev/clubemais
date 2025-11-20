@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -81,8 +82,10 @@ class FooterSettingsController extends Controller
 
         SiteSetting::updateOrCreate(['group' => 'footer'], ['data' => $data]);
 
-        Cache::forget('footer_settings');
         Cache::forget('site_setting:footer');
+        Cache::forget('footer_settings');
+
+        Artisan::call('optimize:clear');
 
         return back()->with('ok', 'Footer atualizado.');
     }

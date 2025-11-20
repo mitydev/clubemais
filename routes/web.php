@@ -12,6 +12,7 @@ use App\Http\Controllers\BeneficiosController;
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\FooterSettingsController;
+use App\Http\Controllers\NavbarSettingsController;
 use App\Http\Controllers\OqueEController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PageSectionController;
@@ -51,6 +52,9 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function (){
 
     Route::get('/settings/footer', [FooterSettingsController::class, 'edit'])->name('admin.footer.edit');
     Route::put('/settings/footer', [FooterSettingsController::class, 'update'])->name('admin.footer.update');
+
+    Route::get('/settings/navbar', [NavbarSettingsController::class, 'edit'])->name('admin.navbar.edit');
+    Route::put('/settings/navbar', [NavbarSettingsController::class, 'update'])->name('admin.navbar.update');
 
 });
 
