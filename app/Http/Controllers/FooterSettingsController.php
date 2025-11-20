@@ -46,13 +46,16 @@ class FooterSettingsController extends Controller
             'newsletter.action'     => ['nullable','string','max:255'],
         ]);
 
-        $prev   = SiteSetting::footer() ?? [];
-        $input  = $r->except(['_token','_method','logo','social']);
-        $data   = array_replace_recursive($prev, $input);
+        $prev  = SiteSetting::footer() ?? [];
+
+        // NÃO deixa social nem quick_links entrarem no merge
+        $input = $r->except(['_token','_method','logo','social','quick_links']);
+        $data  = array_replace_recursive($prev, $input);
 
         // Normaliza o checkbox (quando desmarcado não vem no request)
         data_set($data, 'newsletter.enabled', $r->boolean('newsletter.enabled'));
 
+        // LOGO
         if ($r->hasFile('logo')) {
             $path = $r->file('logo')->store('footer', 'public');
             $data['logo_path'] = 'storage/' . ltrim($path, '/');
@@ -60,6 +63,7 @@ class FooterSettingsController extends Controller
             $data['logo_path'] = trim($r->input('logo_path'));
         }
 
+        // SOCIAL – sempre baseado só no request
         $socialInput = collect($r->input('social', []))->map(fn($row) => [
             'icon'      => Arr::get($row, 'icon'),
             'url'       => Arr::get($row, 'url'),
@@ -75,8 +79,14 @@ class FooterSettingsController extends Controller
             return $row;
         })->filter(fn ($row) => !empty($row['url']))->values()->all();
 
-        $data['quick_links'] = collect(Arr::get($data, 'quick_links', []))
-            ->filter(fn ($r) => !empty($r['label']) && !empty($r['href']))
+        // QUICK_LINKS – sempre baseado só no request
+        $quickLinksInput = $r->input('quick_links', []);
+
+        $data['quick_links'] = collect($quickLinksInput)
+            ->filter(fn ($row) =>
+                !empty($row['label']) &&
+                !empty($row['href'])
+            )
             ->values()
             ->all();
 
@@ -89,5 +99,5 @@ class FooterSettingsController extends Controller
 
         return back()->with('ok', 'Footer atualizado.');
     }
-
+    
 }
