@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Page;
 use App\Models\Term;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
 
-    public function home()
+    public function home(Request $request)
     {
         try {
             $now = now();
@@ -55,7 +56,12 @@ class HomeController extends Controller
             if (!$page) {
                 return view('home');  // fallback estático
             }
-            // return view('home');
+            if ($request->has('event')){
+                // Lista os eventos
+                if ($request->get('event') == 'login'){
+                    return redirect()->route('login.sso');
+                }
+            }
             return view('homeTeste', compact('page'));
         } catch (\Throwable $th) {
             dd($th->getMessage());
