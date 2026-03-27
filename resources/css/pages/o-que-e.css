@@ -275,3 +275,46 @@
   .how-hex{ width: 86px; height: 86px; }
   .how-hex img{ width: 36px; height: 36px; }
 }
+
+.section-content-rich {
+  padding: 4rem 1.5rem;            
+}
+
+.section-content-rich .section-content-inner {
+  max-width: 1330px;                
+  margin: 0 auto;                  
+}
+
+.section-content-rich h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.section-content-rich h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.section-content-rich p {
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+.section-content-rich ul {
+  margin: 0.5rem 0 1.25rem 1.25rem;
+  padding-left: 1.25rem;
+  list-style: disc;          
+}
+
+.section-content-rich li + li {
+  margin-top: 0.25rem;
+}
+
+.section-content-rich hr {
+  margin: 1.5rem 0;
+  border: 0;
+  border-top: 1px solid #e5e7eb;
+}

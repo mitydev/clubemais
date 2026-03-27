@@ -12,6 +12,7 @@ export default defineConfig({
                 'resources/css/pages/o-que-e.css',
                 'resources/css/pages/home.css',
                 'resources/css/pages/beneficios.css',
+                'resources/css/pages/faq.css',
             ],
             refresh: true,
         }),

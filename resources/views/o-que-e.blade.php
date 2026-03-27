@@ -136,7 +136,7 @@
       </div>
     </div>
   </section>
-
+  
   @include('components.footer')
 
 <script>
