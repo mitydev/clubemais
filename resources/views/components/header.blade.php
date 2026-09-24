@@ -10,7 +10,7 @@
   };
 
   $logoPath = data_get($cfg, 'logo_path');
-  $logoUrl  = $toUrl($logoPath) ?? asset('images/novo_logo_320x100_tight.svg');
+  $logoUrl  = $toUrl($logoPath) ?? asset('images/CLUBEMAISHEADER.png');
 
   $menu = collect(data_get($cfg, 'menu', []))
       ->filter(fn($r) => !empty($r['label']) && !empty($r['href']))

@@ -27,7 +27,7 @@
   }
 
   // logo com domínio atual
-  $logoUrl = $toUrl($logoPath) ?? asset('images/novo_logo_320x100_white.svg');
+  $logoUrl = $toUrl($logoPath) ?? asset('images/clube_mais_footer_2.png');
 
   // mapeia ícones default (se não houver upload)
   $iconMap = [
@@ -49,7 +49,7 @@
       {{-- Coluna 1 - Identidade / contato --}}
       <div class="lg:col-span-5 space-y-6">
         <div>
-          <img src="{{ $logoUrl }}" alt="Clube+">
+          <img src="{{ $logoUrl }}" style="max-width: 320px" alt="Clube+">
         </div>
 
         @if($about)
@@ -85,13 +85,13 @@
                 $iconSrc  = $iconUploaded ?: $iconFallback;
               @endphp
               @if($iconSrc)
-              
+
                 <li>
                   <a class="{{ $btn }}" href="{{ $href }}" target="_blank" rel="noopener">
                     <img src="{{ $iconSrc }}" alt="" class="w-5 h-5">
                   </a>
                 </li>
-               
+
               @endif
             @endforeach
           </ul>
